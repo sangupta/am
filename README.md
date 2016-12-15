@@ -6,19 +6,22 @@ implementations and helper classes.
 ## To test the output of a simple JSP tag
 
 ```java
-AmTagLibTestHelper.testTagOutput(MyCustomJSPTag.class, expectedOutputWrittenToJspWriter, new GenericConsumer<MyCustomJSPTag>() {
+AmTagLibTestHelper.testTagOutput(MyCustomJSPTag.class, // the class implementing custom tag
+	expectedOutputWrittenToJspWriter,  				   // the expected String response
+	new GenericConsumer<MyCustomJSPTag>() {            // set the values before invocation
 	
-	public boolean consume(MyCustomJSPTag tag) {
-		// set the properties of the tag
-		tag.setProperty1(prop1);
-		tag.setProperty2(prop2);
-
-		// and so on...
-		
-		return true;
+		public boolean consume(MyCustomJSPTag tag) {
+			// set the properties of the tag
+			tag.setProperty1(prop1);
+			tag.setProperty2(prop2);
+	
+			// and so on...
+			
+			return true;
+		}
 	}
-	
-});
+
+);
 ```
 
 ## To test a given JSP tag we essentially need to do:
@@ -51,13 +54,24 @@ The code below is used to test `MyCustomFilter` by passing the relevant wired `S
 and `ServletResponse` objects making sure that the internal `FilterChain` supplied is invoked.
 
 ```java
+// obtain an instance of the filter
 MyCustomFilter filter = AmServletFilterTestHelper.getFilterForUnitTesting(MyCustomFilter.class);
 
+// create request and response objects as filter will need them
+// the AmHttpServletRequest.getDefault() method returns a request for a server
+// deployed on localhost on port 80, and being hit with same machine where
+// the servlet context is `context` and the path is `/home.html`
 AmHttpServletRequest request = AmHttpServletRequest.getDefault("home.html");
+
+// the response object to which filter will write
 AmHttpServletResponse response = new AmHttpServletResponse();
 
+// filter invocation
 AmServletFilterTestHelper.assertFilterChainInvoked(filter, request, response);
 ```
+
+A similar method `AmServletFilterTestHelper.assertFilterChainNotInvoked` is available that
+checks that during filter execution, the `FilterChain` was not invoked.
 
 # Downloads
 
