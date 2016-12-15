@@ -1,19 +1,26 @@
 package com.sangupta.am.servlet2;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.el.ELContext;
-import javax.servlet.jsp.JspContext;
+import javax.servlet.Servlet;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.el.ExpressionEvaluator;
 import javax.servlet.jsp.el.VariableResolver;
 
 @SuppressWarnings("deprecation")
-public class AmJspContext extends JspContext {
+public class AmPageContext extends PageContext {
 	
 	protected final Map<String, Object> pageAttributes = new HashMap<>();
 	
@@ -31,6 +38,16 @@ public class AmJspContext extends JspContext {
 	
 	protected VariableResolver variableResolver;
 	
+	protected ServletRequest request;
+	
+	protected ServletResponse response;
+	
+	protected ServletConfig servletConfig;
+	
+	protected ServletContext servletContext;
+	
+	protected HttpSession session;
+	
 	public void setJspWriter(JspWriter jspWriter) {
 		this.jspWriter = jspWriter;
 	}
@@ -47,7 +64,108 @@ public class AmJspContext extends JspContext {
 		this.variableResolver = variableResolver;
 	}
 	
+	public void setRequest(ServletRequest request) {
+		this.request = request;
+	}
+	
+	public void setResponse(ServletResponse response) {
+		this.response = response;
+	}
+	
+	public void setServletConfig(ServletConfig servletConfig) {
+		this.servletConfig = servletConfig;
+	}
+	
+	public void setServletContext(ServletContext servletContext) {
+		this.servletContext = servletContext;
+	}
+	
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+	
 	// Overridden methods follow
+
+	@Override
+	public void initialize(Servlet servlet, ServletRequest request, ServletResponse response, String errorPageURL, boolean needsSession, int bufferSize, boolean autoFlush) throws IOException, IllegalStateException, IllegalArgumentException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void release() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HttpSession getSession() {
+		return this.session;
+	}
+
+	@Override
+	public Object getPage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ServletRequest getRequest() {
+		return this.request;
+	}
+
+	@Override
+	public ServletResponse getResponse() {
+		return this.response;
+	}
+
+	@Override
+	public Exception getException() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ServletConfig getServletConfig() {
+		return this.servletConfig;
+	}
+
+	@Override
+	public ServletContext getServletContext() {
+		return this.servletContext;
+	}
+
+	@Override
+	public void forward(String relativeUrlPath) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void include(String relativeUrlPath) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void include(String relativeUrlPath, boolean flush) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handlePageException(Exception e) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handlePageException(Throwable t) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	// Overridden methods from JspContext
 
 	@Override
 	public Object findAttribute(String arg0) {

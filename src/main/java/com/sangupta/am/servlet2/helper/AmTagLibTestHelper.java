@@ -8,8 +8,11 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import com.sangupta.am.AmUtils;
+import com.sangupta.am.servlet2.AmHttpServletRequest;
+import com.sangupta.am.servlet2.AmHttpServletResponse;
 import com.sangupta.am.servlet2.AmJspContext;
 import com.sangupta.am.servlet2.AmJspWriter;
+import com.sangupta.am.servlet2.AmPageContext;
 
 public class AmTagLibTestHelper {
 	
@@ -70,12 +73,19 @@ public class AmTagLibTestHelper {
 		try {
 			T tag = clazz.newInstance();
 			
-			AmJspContext context = new AmJspContext();
+			AmPageContext context = new AmPageContext();
 			AmJspWriter writer = new AmJspWriter();
-			
+			AmHttpServletRequest request = new AmHttpServletRequest();
+			AmHttpServletResponse response = new AmHttpServletResponse();
+
+			// set page context
 			context.setJspWriter(writer);
-			tag.setJspContext(context);
+			context.setRequest(request);
+			context.setResponse(response);
 			
+			// complete tag
+			tag.setJspContext(context);
+
 			return tag;
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException(e);
