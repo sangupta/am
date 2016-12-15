@@ -12,6 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.sangupta.jerry.exceptions.NotImplementedException;
 import com.sangupta.jerry.util.AssertUtils;
 
 /**
@@ -29,6 +30,8 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 	protected String method = "GET";
 	
 	protected Principal principal;
+	
+	protected HttpSession session;
 	
 	public void setMethod(String method) {
 		this.method = method;
@@ -54,7 +57,7 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 
 	@Override
 	public String getAuthType() {
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
@@ -99,32 +102,32 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 
 	@Override
 	public String getPathInfo() {
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public String getPathTranslated() {
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public String getContextPath() {
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public String getQueryString() {
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public String getRemoteUser() {
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public boolean isUserInRole(String role) {
-		return false;
+		throw new NotImplementedException();
 	}
 
 	@Override
@@ -134,7 +137,7 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 
 	@Override
 	public String getRequestedSessionId() {
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
@@ -154,6 +157,15 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 
 	@Override
 	public HttpSession getSession(boolean create) {
+		if(this.session != null) {
+			return session;
+		}
+		
+		if(create) {
+			this.session = new AmHttpSession();
+			return this.session;
+		}
+		
 		return null;
 	}
 

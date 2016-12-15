@@ -19,14 +19,12 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.el.ExpressionEvaluator;
 import javax.servlet.jsp.el.VariableResolver;
 
+import com.sangupta.jerry.exceptions.NotImplementedException;
+
 @SuppressWarnings("deprecation")
 public class AmPageContext extends PageContext {
 	
 	protected final Map<String, Object> pageAttributes = new HashMap<>();
-	
-	protected final Map<String, Object> requestAttributes = new HashMap<>();
-	
-	protected final Map<String, Object> sessionAttributes = new HashMap<>();
 	
 	protected final Map<String, Object> applicationAttributes = new HashMap<>();
 	
@@ -88,14 +86,15 @@ public class AmPageContext extends PageContext {
 
 	@Override
 	public void initialize(Servlet servlet, ServletRequest request, ServletResponse response, String errorPageURL, boolean needsSession, int bufferSize, boolean autoFlush) throws IOException, IllegalStateException, IllegalArgumentException {
-		// TODO Auto-generated method stub
-		
+		this.servletConfig = servlet.getServletConfig();
+		this.servletContext = servlet.getServletConfig().getServletContext();
+		this.request = request;
+		this.response = response;
 	}
 
 	@Override
 	public void release() {
-		// TODO Auto-generated method stub
-		
+		throw new NotImplementedException();
 	}
 
 	@Override
@@ -105,8 +104,7 @@ public class AmPageContext extends PageContext {
 
 	@Override
 	public Object getPage() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
@@ -121,8 +119,7 @@ public class AmPageContext extends PageContext {
 
 	@Override
 	public Exception getException() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
@@ -137,32 +134,27 @@ public class AmPageContext extends PageContext {
 
 	@Override
 	public void forward(String relativeUrlPath) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public void include(String relativeUrlPath) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public void include(String relativeUrlPath, boolean flush) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public void handlePageException(Exception e) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public void handlePageException(Throwable t) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
+		throw new NotImplementedException();
 	}
 	
 	// Overridden methods from JspContext
@@ -173,12 +165,14 @@ public class AmPageContext extends PageContext {
 			return this.pageAttributes.get(arg0);
 		}
 
-		if(this.requestAttributes.containsKey(arg0)) {
-			return this.requestAttributes.get(arg0);
+		Object attribute = this.getRequest().getAttribute(arg0);
+		if(attribute != null) {
+			return attribute;
 		}
 
-		if(this.sessionAttributes.containsKey(arg0)) {
-			return this.sessionAttributes.get(arg0);
+		attribute = this.getSession().getAttribute(arg0);
+		if(attribute != null) {
+			return attribute;
 		}
 
 		if(this.applicationAttributes.containsKey(arg0)) {
@@ -200,10 +194,10 @@ public class AmPageContext extends PageContext {
 				return this.pageAttributes.get(arg0);
 				
 			case PageContext.REQUEST_SCOPE:
-				return this.requestAttributes.get(arg0);
+				return this.getRequest().getAttribute(arg0);
 				
 			case PageContext.SESSION_SCOPE:
-				return this.sessionAttributes.get(arg0);
+				return this.getSession().getAttribute(arg0);
 				
 			case PageContext.APPLICATION_SCOPE:
 				return this.applicationAttributes.get(arg0);
@@ -214,16 +208,17 @@ public class AmPageContext extends PageContext {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Enumeration<String> getAttributeNamesInScope(int arg0) {
 		switch(arg0) {
 			case PageContext.PAGE_SCOPE:
 				return Collections.enumeration(this.pageAttributes.keySet());
 				
 			case PageContext.REQUEST_SCOPE:
-				return Collections.enumeration(this.requestAttributes.keySet());
+				return this.getRequest().getAttributeNames();
 				
 			case PageContext.SESSION_SCOPE:
-				return Collections.enumeration(this.sessionAttributes.keySet());
+				return this.getSession().getAttributeNames();
 				
 			case PageContext.APPLICATION_SCOPE:
 				return Collections.enumeration(this.applicationAttributes.keySet());
@@ -239,11 +234,13 @@ public class AmPageContext extends PageContext {
 			return PageContext.PAGE_SCOPE;
 		}
 		
-		if(this.requestAttributes.containsKey(arg0)) {
+		Object attribute = this.getRequest().getAttribute(arg0);
+		if(attribute != null) {
 			return PageContext.REQUEST_SCOPE;
 		}
 
-		if(this.sessionAttributes.containsKey(arg0)) {
+		attribute = this.getSession().getAttribute(arg0);
+		if(attribute != null) {
 			return PageContext.SESSION_SCOPE;
 		}
 
@@ -287,11 +284,11 @@ public class AmPageContext extends PageContext {
 				return;
 				
 			case PageContext.REQUEST_SCOPE:
-				this.requestAttributes.remove(arg0);
+				this.getRequest().removeAttribute(arg0);
 				return;
 				
 			case PageContext.SESSION_SCOPE:
-				this.sessionAttributes.remove(arg0);
+				this.getSession().removeAttribute(arg0);
 				return;
 				
 			case PageContext.APPLICATION_SCOPE:
@@ -316,11 +313,11 @@ public class AmPageContext extends PageContext {
 				return;
 				
 			case PageContext.REQUEST_SCOPE:
-				this.requestAttributes.put(arg0, arg1);
+				this.getRequest().setAttribute(arg0, arg1);
 				return;
 				
 			case PageContext.SESSION_SCOPE:
-				this.sessionAttributes.put(arg0, arg1);
+				this.getSession().setAttribute(arg0, arg1);
 				return;
 				
 			case PageContext.APPLICATION_SCOPE:
