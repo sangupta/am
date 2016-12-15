@@ -3,7 +3,25 @@
 `am` makes it super-easy to unit-test Java Servlet API code by providing various mock
 implementations and helper classes.
 
-For example, to test a given JSP tag, you could essentially do:
+## To test the output of a simple JSP tag
+
+```java
+AmTagLibTestHelper.testTagOutput(MyCustomJSPTag.class, expectedOutputWrittenToJspWriter, new GenericConsumer<MyCustomJSPTag>() {
+	
+	public boolean consume(MyCustomJSPTag tag) {
+		// set the properties of the tag
+		tag.setProperty1(prop1);
+		tag.setProperty2(prop2);
+
+		// and so on...
+		
+		return true;
+	}
+	
+});
+```
+
+## To test a given JSP tag we essentially need to do:
 
 ```java
 // let's say we are testing a Base64Tag class

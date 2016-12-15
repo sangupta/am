@@ -6,6 +6,14 @@ public class AmPrincipal implements Principal {
 	
 	protected String name;
 	
+	public AmPrincipal() {
+		
+	}
+	
+	public AmPrincipal(String name) {
+		this.name = name;
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}

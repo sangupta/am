@@ -9,11 +9,14 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import javax.servlet.jsp.tagext.Tag;
 
+import org.junit.Assert;
+
 import com.sangupta.am.AmUtils;
 import com.sangupta.am.servlet2.AmHttpServletRequest;
 import com.sangupta.am.servlet2.AmHttpServletResponse;
 import com.sangupta.am.servlet2.AmJspWriter;
 import com.sangupta.am.servlet2.AmPageContext;
+import com.sangupta.jerry.consume.GenericConsumer;
 
 public class AmTagLibTestHelper {
 	
@@ -120,7 +123,6 @@ public class AmTagLibTestHelper {
 		}
 	}
 	
-	
 	/**
 	 * Execute the tag safely converting any exception into a {@link RuntimeException}.
 	 * 
@@ -178,6 +180,15 @@ public class AmTagLibTestHelper {
 		} catch(JspException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static <T extends SimpleTagSupport> void testTagOutput(Class<T> tagClass, String expectedOutput, GenericConsumer<T> consumer) {
+		T tag = AmTagLibTestHelper.getSimpleTagForUnitTesting(tagClass);
+		consumer.consume(tag);
+		AmTagLibTestHelper.doTag(tag);
+		String actualOutput = AmTagLibTestHelper.getJspWriter(tag).toString();
+		
+		Assert.assertEquals(expectedOutput, actualOutput);
 	}
 	
 }
