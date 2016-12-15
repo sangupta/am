@@ -20,10 +20,14 @@ import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.jerry.util.StringUtils;
 
 /**
- * Implementation of {@link ServletRequest} to use in unit testing.
+ * Implementation of the {@link ServletRequest} for unit-testing that keeps all
+ * params within memory and provides useful accessor methods to modify the
+ * values.
+ * 
+ * Meant to be used only for unit-testing.
  * 
  * @author sangupta
- *
+ * @since 1.0.0
  */
 public class AmServletRequest implements ServletRequest {
 	
@@ -56,6 +60,28 @@ public class AmServletRequest implements ServletRequest {
 	protected String localName;
 	
 	protected int localPort;
+	
+	public static AmServletRequest getDefault() {
+		AmServletRequest request = new AmServletRequest();
+		
+		request.protocol = "HTTP/1.1";
+		request.scheme = "http";
+		
+		request.serverName = "localhost";
+		request.serverPort = 80;
+		
+		request.characterEncoding = null;
+		request.contentType = null;
+		
+		request.remoteAddress = null;
+		request.remoteHost = null;
+		request.remotePort = -1;
+		
+		request.localAddress = null;
+		request.localPort = -1;
+		
+		return request;
+	}
 	
 	public void setProtocol(String protocol) {
 		this.protocol = protocol;

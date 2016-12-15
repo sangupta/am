@@ -9,6 +9,16 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Implementation of the {@link HttpServletResponse} for unit-testing that keeps all
+ * params within memory and provides useful accessor methods to modify the
+ * values.
+ * 
+ * Meant to be used only for unit-testing.
+ * 
+ * @author sangupta
+ * @since 1.0.0
+ */
 public class AmHttpServletResponse extends AmServletResponse implements HttpServletResponse {
 	
 	protected final List<Cookie> cookies = new ArrayList<>();

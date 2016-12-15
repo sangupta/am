@@ -7,6 +7,16 @@ import java.util.Locale;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletResponse;
 
+/**
+ * Implementation of the {@link ServletResponse} for unit-testing that keeps all
+ * params within memory and provides useful accessor methods to modify the
+ * values.
+ * 
+ * Meant to be used only for unit-testing.
+ * 
+ * @author sangupta
+ * @since 1.0.0
+ */
 public class AmServletResponse implements ServletResponse {
 
 	@Override

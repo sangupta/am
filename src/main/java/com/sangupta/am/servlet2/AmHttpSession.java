@@ -1,14 +1,29 @@
 package com.sangupta.am.servlet2;
 
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 
+/**
+ * Implementation of the {@link HttpSession} for unit-testing that keeps all
+ * params within memory and provides useful accessor methods to modify the
+ * values.
+ * 
+ * Meant to be used only for unit-testing.
+ * 
+ * @author sangupta
+ * @since 1.0.0
+ */
 @SuppressWarnings("deprecation")
 public class AmHttpSession implements HttpSession {
+	
+	private final Map<String, Object> attributes = new HashMap<>();
 	
 	private long created = System.currentTimeMillis();
 	
@@ -61,7 +76,7 @@ public class AmHttpSession implements HttpSession {
 
 	@Override
 	public Object getAttribute(String name) {
-		return null;
+		return this.attributes.get(name);
 	}
 
 	@Override
@@ -70,8 +85,8 @@ public class AmHttpSession implements HttpSession {
 	}
 
 	@Override
-	public Enumeration getAttributeNames() {
-		return null;
+	public Enumeration<String> getAttributeNames() {
+		return Collections.enumeration(this.attributes.keySet());
 	}
 
 	@Override
@@ -81,7 +96,7 @@ public class AmHttpSession implements HttpSession {
 
 	@Override
 	public void setAttribute(String name, Object value) {
-		
+		this.attributes.put(name, value);
 	}
 
 	@Override
@@ -91,7 +106,7 @@ public class AmHttpSession implements HttpSession {
 
 	@Override
 	public void removeAttribute(String name) {
-		
+		this.removeAttribute(name);
 	}
 
 	@Override

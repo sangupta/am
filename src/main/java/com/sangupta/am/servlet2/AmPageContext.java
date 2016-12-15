@@ -21,6 +21,16 @@ import javax.servlet.jsp.el.VariableResolver;
 
 import com.sangupta.jerry.exceptions.NotImplementedException;
 
+/**
+ * Implementation of the {@link PageContext} for unit-testing that keeps all
+ * params within memory and provides useful accessor methods to modify the
+ * values.
+ * 
+ * Meant to be used only for unit-testing.
+ * 
+ * @author sangupta
+ * @since 1.0.0
+ */
 @SuppressWarnings("deprecation")
 public class AmPageContext extends PageContext {
 	

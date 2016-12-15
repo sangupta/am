@@ -16,10 +16,14 @@ import com.sangupta.jerry.exceptions.NotImplementedException;
 import com.sangupta.jerry.util.AssertUtils;
 
 /**
- * Implementation of {@link HttpServletRequest} for unit-testing.
+ * Implementation of {@link HttpServletRequest} for unit-testing that keeps all
+ * params within memory and provides useful accessor methods to modify the
+ * values.
+ * 
+ * Meant to be used only for unit-testing.
  * 
  * @author sangupta
- *
+ * @since 1.0.0
  */
 public class AmHttpServletRequest extends AmServletRequest implements HttpServletRequest {
 	
@@ -32,6 +36,43 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 	protected Principal principal;
 	
 	protected HttpSession session;
+	
+	protected String requestURI;
+	
+	protected StringBuffer requestURL;
+	
+	public static AmHttpServletRequest getDefault(String path) {
+		AmHttpServletRequest request = new AmHttpServletRequest();
+		
+		request.protocol = "HTTP/1.1";
+		request.scheme = "http";
+		
+		request.requestURI = "/context/";
+		request.requestURL = new StringBuffer("http://localhost:80/context/");
+		
+		request.serverName = "localhost";
+		request.serverPort = 80;
+		
+		request.characterEncoding = null;
+		request.contentType = null;
+		
+		request.remoteAddress = null;
+		request.remoteHost = null;
+		request.remotePort = -1;
+		
+		request.localAddress = null;
+		request.localPort = -1;
+		
+		return request;
+	}
+	
+	public void setRequestURI(String requestURI) {
+		this.requestURI = requestURI;
+	}
+	
+	public void setRequestURL(StringBuffer requestURL) {
+		this.requestURL = requestURL;
+	}
 	
 	public void setMethod(String method) {
 		this.method = method;

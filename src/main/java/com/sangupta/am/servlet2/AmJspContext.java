@@ -12,6 +12,16 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.el.ExpressionEvaluator;
 import javax.servlet.jsp.el.VariableResolver;
 
+/**
+ * Implementation of the {@link JspContext} for unit-testing that keeps all
+ * params within memory and provides useful accessor methods to modify the
+ * values.
+ * 
+ * Meant to be used only for unit-testing.
+ * 
+ * @author sangupta
+ * @since 1.0.0
+ */
 @SuppressWarnings("deprecation")
 public class AmJspContext extends JspContext {
 	

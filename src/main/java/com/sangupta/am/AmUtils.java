@@ -7,6 +7,13 @@ import java.util.List;
 
 import com.sangupta.jerry.util.AssertUtils;
 
+/**
+ * Utility classes that help in building the <code>am</code>
+ * framework.
+ * 
+ * @author sangupta
+ * @since 1.0.0
+ */
 public class AmUtils {
 	
 	public static <T> T getFieldForName(Object instance, String name, Class<T> castTo) {

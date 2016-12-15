@@ -2,11 +2,12 @@ package com.sangupta.am.servlet2.helper;
 
 import java.io.IOException;
 
+import javax.servlet.Filter;
 import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.BodyTagSupport;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
+import javax.servlet.jsp.tagext.BodyTag;
+import javax.servlet.jsp.tagext.SimpleTag;
 import javax.servlet.jsp.tagext.Tag;
 
 import org.junit.Assert;
@@ -18,15 +19,25 @@ import com.sangupta.am.servlet2.AmJspWriter;
 import com.sangupta.am.servlet2.AmPageContext;
 import com.sangupta.jerry.consume.GenericConsumer;
 
+/**
+ * Helper class that aids in unit testing of JSP custom tag libraries
+ * by providing convenience methods and wiring default objects.
+ *  
+ * @author sangupta
+ * @since 1.0.0
+ */
 public class AmTagLibTestHelper {
 	
 	/**
 	 * Return the {@link JspContext} associated with the tag.
 	 * 
 	 * @param tag
-	 * @return
+	 *            the {@link SimpleTag} instance
+	 * 
+	 * @return {@link JspContext} associated if any, or <code>null</code>
+	 *         otherwise
 	 */
-	public static JspContext getJspContext(SimpleTagSupport tag) {
+	public static JspContext getJspContext(SimpleTag tag) {
 		if(tag == null) {
 			return null;
 		}
@@ -35,12 +46,16 @@ public class AmTagLibTestHelper {
 	}
 	
 	/**
-	 * Return the {@link JspWriter} from the {@link JspContext} associated with the tag.
+	 * Return the {@link JspWriter} from the {@link JspContext} associated with
+	 * the tag.
 	 * 
 	 * @param tag
-	 * @return
+	 *            the {@link SimpleTag} instance
+	 * 
+	 * @return {@link JspWriter} associated if any, or <code>null</code>
+	 *         otherwise
 	 */
-	public static JspWriter getJspWriter(SimpleTagSupport tag) {
+	public static JspWriter getJspWriter(SimpleTag tag) {
 		if(tag == null) {
 			return null;
 		}
@@ -53,7 +68,17 @@ public class AmTagLibTestHelper {
 		return context.getOut();
 	}
 	
-	public static String getJspWriterString(SimpleTagSupport tag) {
+	/**
+	 * Get the {@link String} value of response written to the internal
+	 * {@link JspWriter} associated with a {@link SimpleTag}.
+	 * 
+	 * @param tag
+	 *            the {@link SimpleTag} instance
+	 * 
+	 * @return the {@link String} written to writer, or <code>null</code> if no
+	 *         {@link JspWriter} is available
+	 */
+	public static String getJspWriterString(SimpleTag tag) {
 		JspWriter writer = getJspWriter(tag);
 		if(writer == null) {
 			return null;
@@ -63,13 +88,23 @@ public class AmTagLibTestHelper {
 	}
 	
 	/**
-	 * Create an instance of the tag, and supply dummy implementations to {@link JspContext}
-	 * and {@link JspWriter} to the same, so that tag can be easily unit-tested.
+	 * Create an instance of the {@link SimpleTag}, and supply dummy implementations to
+	 * {@link JspContext} and {@link JspWriter} to the same, so that tag can be
+	 * easily unit-tested.
 	 * 
 	 * @param clazz
-	 * @return
+	 *            the class implementing {@link SimpleTag}
+	 * 
+	 * @return the tag instance created and wired, <code>null</code> if
+	 *         something fails
+	 * 
+	 * @throws InstantiationException
+	 *             if tag cannot be instantiated
+	 * 
+	 * @throws IllegalAccessException
+	 *             if tag cannot be instantiated
 	 */
-	public static <T extends SimpleTagSupport> T getSimpleTagForUnitTesting(Class<T> clazz) {
+	public static <T extends SimpleTag> T getSimpleTagForUnitTesting(Class<T> clazz) {
 		if(clazz == null) {
 			return null;
 		}
@@ -96,7 +131,24 @@ public class AmTagLibTestHelper {
 		}
 	}
 	
-	public static <T extends BodyTagSupport> T getBodyTagForUnitTesting(Class<T> clazz) {
+	/**
+	 * Create an instance of the {@link BodyTag}, and supply dummy implementations to
+	 * {@link JspContext} and {@link JspWriter} to the same, so that tag can be
+	 * easily unit-tested.
+	 * 
+	 * @param clazz
+	 *            the class implementing {@link SimpleTag}
+	 * 
+	 * @return the tag instance created and wired, <code>null</code> if
+	 *         something fails
+	 * 
+	 * @throws InstantiationException
+	 *             if tag cannot be instantiated
+	 * 
+	 * @throws IllegalAccessException
+	 *             if tag cannot be instantiated
+	 */
+	public static <T extends BodyTag> T getBodyTagForUnitTesting(Class<T> clazz) {
 		if(clazz == null) {
 			return null;
 		}
@@ -124,11 +176,18 @@ public class AmTagLibTestHelper {
 	}
 	
 	/**
-	 * Execute the tag safely converting any exception into a {@link RuntimeException}.
+	 * Execute the {@link SimpleTag} safely converting any exception into a
+	 * {@link RuntimeException}. Does nothing if the instance provided is
+	 * <code>null</code>.
 	 * 
 	 * @param tag
+	 *            the {@link SimpleTag} to execute
+	 * 
+	 * @throws RuntimeException
+	 *             if one of {@link JspException} or {@link IOException} is
+	 *             thrown when executing the {@link SimpleTag#doTag()} method
 	 */
-	public static void doTag(SimpleTagSupport tag) {
+	public static void doTag(SimpleTag tag) {
 		if(tag == null) {
 			return;
 		}
@@ -140,7 +199,18 @@ public class AmTagLibTestHelper {
 		}
 	}
 
-	public static AmBodyTagEvaluationResult doTag(BodyTagSupport tag) {
+	/**
+	 * Execute the {@link BodyTag} safely converting any exception into a
+	 * {@link RuntimeException}. Does nothing if the instance provided is
+	 * <code>null</code>.
+	 * 
+	 * @param tag
+	 *            the {@link BodyTag} instance to execute
+	 * 
+	 * @return the {@link AmBodyTagEvaluationResult} generated as part of
+	 *         {@link BodyTag} execution
+	 */
+	public static AmBodyTagEvaluationResult doTag(BodyTag tag) {
 		if(tag == null) {
 			return null;
 		}
@@ -182,7 +252,22 @@ public class AmTagLibTestHelper {
 		}
 	}
 
-	public static <T extends SimpleTagSupport> void testTagOutput(Class<T> tagClass, String expectedOutput, GenericConsumer<T> consumer) {
+	/**
+	 * Test the {@link String} output written to {@link JspWriter} as part of
+	 * executing a {@link SimpleTag}.
+	 * 
+	 * @param tagClass
+	 *            the {@link Class} that implements the {@link Filter}
+	 * 
+	 * @param expectedOutput
+	 *            the expected {@link String} output
+	 * 
+	 * @param consumer
+	 *            the {@link GenericConsumer} that is called before executing
+	 *            the tag instance so that any tag properties can be set by the
+	 *            callee
+	 */
+	public static <T extends SimpleTag> void testTagOutput(Class<T> tagClass, String expectedOutput, GenericConsumer<T> consumer) {
 		T tag = AmTagLibTestHelper.getSimpleTagForUnitTesting(tagClass);
 		consumer.consume(tag);
 		AmTagLibTestHelper.doTag(tag);

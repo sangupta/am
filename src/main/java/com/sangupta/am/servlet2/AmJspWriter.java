@@ -7,11 +7,14 @@ import java.io.StringWriter;
 import javax.servlet.jsp.JspWriter;
 
 /**
- * An implementation of the {@link JspWriter} that can be used
- * in unit-testing.
+ * Implementation of the {@link JspWriter} for unit-testing that keeps all
+ * params within memory and provides useful accessor methods to modify the
+ * values.
+ * 
+ * Meant to be used only for unit-testing.
  * 
  * @author sangupta
- *
+ * @since 1.0.0
  */
 public class AmJspWriter extends JspWriter {
 	
