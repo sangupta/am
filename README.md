@@ -45,6 +45,20 @@ String actualEncoded = AmTagLibTestHelper.getJspWriterString(tag);
 Assert.assertEquals(expectedEncoded, actualEncoded);
 ```
 
+## To test a Servlet Filter
+
+The code below is used to test `MyCustomFilter` by passing the relevant wired `ServletRequest`
+and `ServletResponse` objects making sure that the internal `FilterChain` supplied is invoked.
+
+```java
+MyCustomFilter filter = AmServletFilterTestHelper.getFilterForUnitTesting(MyCustomFilter.class);
+
+AmHttpServletRequest request = AmHttpServletRequest.getDefault("home.html");
+AmHttpServletResponse response = new AmHttpServletResponse();
+
+AmServletFilterTestHelper.assertFilterChainInvoked(filter, request, response);
+```
+
 # Downloads
 
 The library is currently under infancy and being updated continually, and thus has not
