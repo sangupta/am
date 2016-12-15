@@ -1,4 +1,4 @@
-package com.sangupta.am.servlet2.helper;
+package com.sangupta.am.servlet.helper;
 
 import java.io.IOException;
 
@@ -10,7 +10,7 @@ import javax.servlet.ServletResponse;
 
 import org.junit.Assert;
 
-import com.sangupta.am.servlet2.AmFilterChain;
+import com.sangupta.am.servlet.AmFilterChain;
 
 /**
  * Helper class that aids in testing of {@link Filter}s.

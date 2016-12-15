@@ -1,4 +1,4 @@
-package com.sangupta.am.servlet2.helper;
+package com.sangupta.am.servlet.helper;
 
 import java.io.IOException;
 
@@ -13,10 +13,10 @@ import javax.servlet.jsp.tagext.Tag;
 import org.junit.Assert;
 
 import com.sangupta.am.AmUtils;
-import com.sangupta.am.servlet2.AmHttpServletRequest;
-import com.sangupta.am.servlet2.AmHttpServletResponse;
-import com.sangupta.am.servlet2.AmJspWriter;
-import com.sangupta.am.servlet2.AmPageContext;
+import com.sangupta.am.servlet.AmHttpServletRequest;
+import com.sangupta.am.servlet.AmHttpServletResponse;
+import com.sangupta.am.servlet.AmJspWriter;
+import com.sangupta.am.servlet.AmPageContext;
 import com.sangupta.jerry.consume.GenericConsumer;
 
 /**

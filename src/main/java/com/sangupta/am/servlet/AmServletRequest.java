@@ -1,4 +1,4 @@
-package com.sangupta.am.servlet2;
+package com.sangupta.am.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.sangupta.am.servlet2;
+package com.sangupta.am.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;

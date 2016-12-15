@@ -1,4 +1,4 @@
-package com.sangupta.am.servlet2;
+package com.sangupta.am.servlet;
 
 import java.util.Collections;
 import java.util.Enumeration;

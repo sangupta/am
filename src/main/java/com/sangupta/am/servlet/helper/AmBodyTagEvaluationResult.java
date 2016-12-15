@@ -1,4 +1,4 @@
-package com.sangupta.am.servlet2.helper;
+package com.sangupta.am.servlet.helper;
 
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
