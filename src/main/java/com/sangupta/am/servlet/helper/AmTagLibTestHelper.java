@@ -31,12 +31,12 @@ import javax.servlet.jsp.tagext.Tag;
 
 import org.junit.Assert;
 
-import com.sangupta.am.AmUtils;
 import com.sangupta.am.servlet.AmHttpServletRequest;
 import com.sangupta.am.servlet.AmHttpServletResponse;
 import com.sangupta.am.servlet.AmJspWriter;
 import com.sangupta.am.servlet.AmPageContext;
 import com.sangupta.jerry.consume.GenericConsumer;
+import com.sangupta.jerry.util.ReflectionUtils;
 
 /**
  * Helper class that aids in unit testing of JSP custom tag libraries
@@ -61,7 +61,7 @@ public class AmTagLibTestHelper {
 			return null;
 		}
 		
-		return AmUtils.getFieldForName(tag, "jspContext", JspContext.class);
+		return ReflectionUtils.getFieldForName(tag, "jspContext", JspContext.class);
 	}
 	
 	/**
