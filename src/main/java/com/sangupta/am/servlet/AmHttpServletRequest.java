@@ -20,19 +20,22 @@
 package com.sangupta.am.servlet;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.sangupta.jerry.exceptions.NotImplementedException;
+import com.sangupta.jerry.ds.SimpleMultiMap;
 import com.sangupta.jerry.util.AssertUtils;
+import com.sangupta.jerry.util.UriUtils;
 
 /**
  * Implementation of {@link HttpServletRequest} for unit-testing that keeps all
@@ -48,7 +51,7 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 	
 	protected final List<Cookie> cookies = new ArrayList<>();
 	
-	protected final Map<String, String> headers = new HashMap<>();
+	protected final SimpleMultiMap<String, String> headers = new SimpleMultiMap<>();
 	
 	protected String method = "GET";
 	
@@ -60,6 +63,28 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 	
 	protected StringBuffer requestURL;
 	
+	protected String authType;
+	
+	protected String contextPath;
+	
+	protected String remoteUser;
+	
+	protected String pathInfo;
+	
+	protected String pathTranslated;
+	
+	protected String queryString;
+	
+	protected String servletPath;
+	
+	protected boolean sessionIdFromCookie;
+	
+	protected boolean sessionIdFromURL;
+	
+	protected boolean sessionValid;
+	
+	protected final Set<String> userRoles = new HashSet<>();
+	
 	public static AmHttpServletRequest getDefault(String path) {
 		AmHttpServletRequest request = new AmHttpServletRequest();
 		
@@ -70,7 +95,7 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 		request.requestURL = new StringBuffer("http://localhost:80/context/");
 		
 		request.serverName = "localhost";
-		request.serverPort = 80;
+		request.serverPort = 8080;
 		
 		request.characterEncoding = null;
 		request.contentType = null;
@@ -79,10 +104,57 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 		request.remoteHost = null;
 		request.remotePort = -1;
 		
+		request.requestURI = path;
+		request.requestURL = new StringBuffer(UriUtils.addWebPaths("http://localhost:8080/context/", path));
+		
 		request.localAddress = null;
 		request.localPort = -1;
 		
 		return request;
+	}
+	
+	public void setSessionValid(boolean sessionValid) {
+		this.sessionValid = sessionValid;
+	}
+	
+	public void addUserRole(String role) {
+		this.userRoles.add(role);
+	}
+	
+	public void removeUserRole(String role) {
+		this.userRoles.remove(role);
+	}
+	
+	public void setSessionIdFromCookie(boolean sessionIdFromCookie) {
+		this.sessionIdFromCookie = sessionIdFromCookie;
+	}
+	
+	public void setSessionIdFromURL(boolean sessionIdFromURL) {
+		this.sessionIdFromURL = sessionIdFromURL;
+	}
+	
+	public void setServletPath(String servletPath) {
+		this.servletPath = servletPath;
+	}
+	
+	public void setQueryString(String queryString) {
+		this.queryString = queryString;
+	}
+	
+	public void setPathInfo(String pathInfo) {
+		this.pathInfo = pathInfo;
+	}
+	
+	public void setPathTranslated(String pathTranslated) {
+		this.pathTranslated = pathTranslated;
+	}
+	
+	public void setContextPath(String contextPath) {
+		this.contextPath = contextPath;
+	}
+	
+	public void setRemoteUser(String remoteUser) {
+		this.remoteUser = remoteUser;
 	}
 	
 	public void setRequestURI(String requestURI) {
@@ -113,11 +185,15 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 		this.principal = principal;
 	}
 	
+	public void setAuthType(String authType) {
+		this.authType = authType;
+	}
+	
 	// Overridden methods follow
 
 	@Override
 	public String getAuthType() {
-		throw new NotImplementedException();
+		return this.authType;
 	}
 
 	@Override
@@ -127,17 +203,34 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 
 	@Override
 	public long getDateHeader(String name) {
-		return 0;
+		String header = this.getHeader(name);
+		if(AssertUtils.isEmpty(header)) {
+			return 0;
+		}
+		
+		try {
+			return new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").parse(header).getTime();
+		} catch(ParseException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public String getHeader(String name) {
-		return this.headers.get(name);
+		if(!this.headers.containsKey(name)) {
+			return null;
+		}
+		
+		return this.headers.getValues(name.toLowerCase()).get(0);
 	}
 
 	@Override
-	public Enumeration getHeaders(String name) {
-		return null;
+	public Enumeration<String> getHeaders(String name) {
+		if(!this.headers.containsKey(name)) {
+			return null;
+		}
+		
+		return Collections.enumeration(this.headers.getValues(name));
 	}
 
 	@Override
@@ -162,32 +255,40 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 
 	@Override
 	public String getPathInfo() {
-		throw new NotImplementedException();
+		return this.pathInfo;
 	}
 
 	@Override
 	public String getPathTranslated() {
-		throw new NotImplementedException();
+		return this.pathTranslated;
 	}
 
 	@Override
 	public String getContextPath() {
-		throw new NotImplementedException();
+		return this.contextPath;
 	}
 
 	@Override
 	public String getQueryString() {
-		throw new NotImplementedException();
+		return this.queryString;
 	}
 
 	@Override
 	public String getRemoteUser() {
-		throw new NotImplementedException();
+		return this.remoteUser;
 	}
 
 	@Override
 	public boolean isUserInRole(String role) {
-		throw new NotImplementedException();
+		if(AssertUtils.isEmpty(role)) {
+			return false;
+		}
+		
+		if(this.userRoles.contains(role)) {
+			return true;
+		}
+		
+		return false;
 	}
 
 	@Override
@@ -197,22 +298,22 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 
 	@Override
 	public String getRequestedSessionId() {
-		throw new NotImplementedException();
+		return this.getSession().getId();
 	}
 
 	@Override
 	public String getRequestURI() {
-		return null;
+		return this.requestURI;
 	}
 
 	@Override
 	public StringBuffer getRequestURL() {
-		return null;
+		return this.requestURL;
 	}
 
 	@Override
 	public String getServletPath() {
-		return null;
+		return this.servletPath;
 	}
 
 	@Override
@@ -231,27 +332,27 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 
 	@Override
 	public HttpSession getSession() {
-		return null;
+		return this.getSession(true);
 	}
 
 	@Override
 	public boolean isRequestedSessionIdValid() {
-		return false;
+		return this.sessionValid;
 	}
 
 	@Override
 	public boolean isRequestedSessionIdFromCookie() {
-		return false;
+		return this.sessionIdFromCookie;
 	}
 
 	@Override
 	public boolean isRequestedSessionIdFromURL() {
-		return false;
+		return this.sessionIdFromURL;
 	}
 
 	@Override
 	public boolean isRequestedSessionIdFromUrl() {
-		return false;
+		return this.sessionIdFromURL;
 	}
 
 }

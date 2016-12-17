@@ -149,4 +149,50 @@ public class AmServletFilterTestHelper {
 		
 		Assert.assertFalse(chain.isChainInvoked());
 	}
+	
+	/**
+	 * Execute the filter via the
+	 * {@link Filter#doFilter(ServletRequest, ServletResponse, javax.servlet.FilterChain)}
+	 * method and checks that the given exception is thrown as part of
+	 * execution. If no exception is thrown, or a different exception is thrown
+	 * then the unit test is considered to fail.
+	 * 
+	 * @param filter
+	 *            the {@link Filter} to execute
+	 * 
+	 * @param throwable
+	 *            the {@link Exception} instance that we want to test for
+	 * 
+	 * @param servletRequest
+	 *            the {@link ServletRequest} as input
+	 * 
+	 * @param servletResponse
+	 *            the {@link ServletResponse} as output
+	 */
+	public static void assertFilterException(Filter filter, Throwable throwable, ServletRequest servletRequest, ServletResponse servletResponse) {
+		if(filter == null) {
+			Assert.fail();
+		}
+		
+		if(servletRequest == null) {
+			Assert.fail();
+		}
+		
+		if(servletResponse == null) {
+			Assert.fail();
+		}
+		
+		AmFilterChain chain = new AmFilterChain();
+		try {
+			filter.doFilter(servletRequest, servletResponse, chain);
+		} catch (Throwable t) {
+			if(throwable.getClass().isAssignableFrom(t.getClass())) {
+				Assert.assertTrue(true);
+				return;
+			}
+		}
+		
+		Assert.fail();
+	}
+	
 }

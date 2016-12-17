@@ -29,6 +29,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 
+import com.sangupta.jerry.util.StringUtils;
+
 /**
  * Implementation of the {@link HttpSession} for unit-testing that keeps all
  * params within memory and provides useful accessor methods to modify the
@@ -42,11 +44,19 @@ import javax.servlet.http.HttpSessionContext;
 @SuppressWarnings("deprecation")
 public class AmHttpSession implements HttpSession {
 	
-	private final Map<String, Object> attributes = new HashMap<>();
+	protected final Map<String, Object> attributes = new HashMap<>();
 	
-	private long created = System.currentTimeMillis();
+	protected long created = System.currentTimeMillis();
 	
-	private String sessionID = UUID.randomUUID().toString();
+	protected long lastAccessed = this.created;
+	
+	protected String sessionID = UUID.randomUUID().toString();
+	
+	protected int maxInterval;
+	
+	protected ServletContext servletContext;
+	
+	protected HttpSessionContext httpSessionContext;
 	
 	public void setCreated(long created) {
 		this.created = created;
@@ -54,6 +64,14 @@ public class AmHttpSession implements HttpSession {
 	
 	public void setSessionID(String sessionID) {
 		this.sessionID = sessionID;
+	}
+	
+	public void setServletContext(ServletContext servletContext) {
+		this.servletContext = servletContext;
+	}
+	
+	public void setHttpSessionContext(HttpSessionContext httpSessionContext) {
+		this.httpSessionContext = httpSessionContext;
 	}
 	
 	// Overridden methods follow
@@ -70,37 +88,39 @@ public class AmHttpSession implements HttpSession {
 
 	@Override
 	public long getLastAccessedTime() {
-		return 0;
+		return this.lastAccessed;
 	}
 
 	@Override
 	public ServletContext getServletContext() {
-		return null;
+		return this.servletContext;
 	}
 
 	@Override
 	public void setMaxInactiveInterval(int interval) {
-		
+		this.maxInterval = interval;
 	}
 
 	@Override
 	public int getMaxInactiveInterval() {
-		return 0;
+		return this.maxInterval;
 	}
 
 	@Override
 	public HttpSessionContext getSessionContext() {
-		return null;
+		return this.httpSessionContext;
 	}
 
 	@Override
 	public Object getAttribute(String name) {
+		this.lastAccessed = System.currentTimeMillis();
+		
 		return this.attributes.get(name);
 	}
 
 	@Override
 	public Object getValue(String name) {
-		return null;
+		return this.getAttribute(name);
 	}
 
 	@Override
@@ -110,27 +130,29 @@ public class AmHttpSession implements HttpSession {
 
 	@Override
 	public String[] getValueNames() {
-		return null;
+		return this.attributes.keySet().toArray(StringUtils.EMPTY_STRING_LIST);
 	}
 
 	@Override
 	public void setAttribute(String name, Object value) {
+		this.lastAccessed = System.currentTimeMillis();
 		this.attributes.put(name, value);
 	}
 
 	@Override
 	public void putValue(String name, Object value) {
-		
+		this.setAttribute(name, value);
 	}
 
 	@Override
 	public void removeAttribute(String name) {
+		this.lastAccessed = System.currentTimeMillis();
 		this.removeAttribute(name);
 	}
 
 	@Override
 	public void removeValue(String name) {
-		
+		this.removeAttribute(name);
 	}
 
 	@Override
@@ -140,7 +162,7 @@ public class AmHttpSession implements HttpSession {
 
 	@Override
 	public boolean isNew() {
-		return false;
+		return this.created == this.lastAccessed;
 	}
 
 }

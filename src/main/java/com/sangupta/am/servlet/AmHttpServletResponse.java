@@ -20,13 +20,15 @@
 package com.sangupta.am.servlet;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+
+import com.sangupta.jerry.ds.SimpleMultiMap;
 
 /**
  * Implementation of the {@link HttpServletResponse} for unit-testing that keeps all
@@ -42,7 +44,7 @@ public class AmHttpServletResponse extends AmServletResponse implements HttpServ
 	
 	protected final List<Cookie> cookies = new ArrayList<>();
 	
-	protected final Map<String, String> headers = new HashMap<>();
+	protected final SimpleMultiMap<String, String> headers = new SimpleMultiMap<>();
 	
 	protected int status;
 	
@@ -111,18 +113,18 @@ public class AmHttpServletResponse extends AmServletResponse implements HttpServ
 
 	@Override
 	public void setDateHeader(String name, long date) {
-		// TODO Auto-generated method stub
-		
+		this.headers.remove(name);
+		this.addDateHeader(name, date);
 	}
 
 	@Override
 	public void addDateHeader(String name, long date) {
-		// TODO Auto-generated method stub
-		
+		this.headers.put(name, new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date(date)));
 	}
 
 	@Override
 	public void setHeader(String name, String value) {
+		this.headers.remove(name);
 		this.headers.put(name, value);
 	}
 
@@ -133,6 +135,7 @@ public class AmHttpServletResponse extends AmServletResponse implements HttpServ
 
 	@Override
 	public void setIntHeader(String name, int value) {
+		this.headers.remove(name);
 		this.headers.put(name, String.valueOf(value));
 	}
 

@@ -35,6 +35,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.ServletRequest;
 
 import com.sangupta.jerry.ds.SimpleMultiMap;
+import com.sangupta.jerry.exceptions.NotImplementedException;
 import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.jerry.util.StringUtils;
 
@@ -87,7 +88,7 @@ public class AmServletRequest implements ServletRequest {
 		request.scheme = "http";
 		
 		request.serverName = "localhost";
-		request.serverPort = 80;
+		request.serverPort = 8080;
 		
 		request.characterEncoding = null;
 		request.contentType = null;
@@ -174,7 +175,7 @@ public class AmServletRequest implements ServletRequest {
 
 	@Override
 	public int getContentLength() {
-		return 0;
+		throw new NotImplementedException();
 	}
 
 	@Override
@@ -212,9 +213,10 @@ public class AmServletRequest implements ServletRequest {
 		return values.toArray(StringUtils.EMPTY_STRING_LIST);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Map getParameterMap() {
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
@@ -239,7 +241,7 @@ public class AmServletRequest implements ServletRequest {
 
 	@Override
 	public BufferedReader getReader() throws IOException {
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
