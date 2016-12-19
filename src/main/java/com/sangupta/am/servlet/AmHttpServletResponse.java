@@ -28,6 +28,9 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sangupta.am.servlet.support.AmUrlEncoder;
+import com.sangupta.jerry.constants.HttpHeaderName;
+import com.sangupta.jerry.constants.HttpStatusCode;
 import com.sangupta.jerry.ds.SimpleMultiMap;
 
 /**
@@ -50,12 +53,18 @@ public class AmHttpServletResponse extends AmServletResponse implements HttpServ
 	
 	protected String statusMessage;
 	
+	protected AmUrlEncoder urlEncoder = new AmUrlEncoder();
+	
 	public int getStatus() {
 		return status;
 	}
 	
 	public String getStatusMessage() {
 		return statusMessage;
+	}
+	
+	public void setUrlEncoder(AmUrlEncoder urlEncoder) {
+		this.urlEncoder = urlEncoder;
 	}
 	
 	// Overridden methods follow
@@ -72,32 +81,28 @@ public class AmHttpServletResponse extends AmServletResponse implements HttpServ
 
 	@Override
 	public String encodeURL(String url) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.urlEncoder.encodeURL(url);
 	}
 
 	@Override
 	public String encodeRedirectURL(String url) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.urlEncoder.encodeRedirectURL(url);
 	}
 
 	@Override
 	public String encodeUrl(String url) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.urlEncoder.encodeUrl(url);
 	}
 
 	@Override
 	public String encodeRedirectUrl(String url) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.urlEncoder.encodeRedirectUrl(url);
 	}
 
 	@Override
 	public void sendError(int sc, String msg) throws IOException {
-		// TODO Auto-generated method stub
-		
+		this.status = sc;
+		this.statusMessage = msg;
 	}
 
 	@Override
@@ -107,8 +112,8 @@ public class AmHttpServletResponse extends AmServletResponse implements HttpServ
 
 	@Override
 	public void sendRedirect(String location) throws IOException {
-		// TODO Auto-generated method stub
-		
+		this.status = HttpStatusCode.TEMPORARY_REDIRECT;
+		this.headers.put(HttpHeaderName.LOCATION, location);
 	}
 
 	@Override

@@ -29,6 +29,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 
+import com.sangupta.jerry.exceptions.NotImplementedException;
 import com.sangupta.jerry.util.StringUtils;
 
 /**
@@ -157,7 +158,7 @@ public class AmHttpSession implements HttpSession {
 
 	@Override
 	public void invalidate() {
-		
+		throw new NotImplementedException();
 	}
 
 	@Override

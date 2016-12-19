@@ -81,6 +81,8 @@ public class AmServletRequest implements ServletRequest {
 	
 	protected int localPort;
 	
+	protected String realPath;
+	
 	public static AmServletRequest getDefault() {
 		AmServletRequest request = new AmServletRequest();
 		
@@ -145,6 +147,10 @@ public class AmServletRequest implements ServletRequest {
 	
 	public void setLocalPort(int localPort) {
 		this.localPort = localPort;
+	}
+	
+	public void setRealPath(String realPath) {
+		this.realPath = realPath;
 	}
 	
 	// Overridden methods follow
@@ -286,15 +292,15 @@ public class AmServletRequest implements ServletRequest {
 		
 		return this.scheme.toLowerCase().trim().startsWith("https://");
 	}
-
+	
 	@Override
 	public RequestDispatcher getRequestDispatcher(String path) {
-		return null;
+		return new AmRequestDispatcher(path);
 	}
 
 	@Override
 	public String getRealPath(String path) {
-		return null;
+		return this.realPath;
 	}
 
 	@Override
