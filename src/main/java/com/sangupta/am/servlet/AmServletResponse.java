@@ -26,6 +26,8 @@ import java.util.Locale;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletResponse;
 
+import com.sangupta.am.servlet.support.ByteArrayServletOutputStream;
+
 /**
  * Implementation of the {@link ServletResponse} for unit-testing that keeps all
  * params within memory and provides useful accessor methods to modify the
@@ -37,94 +39,96 @@ import javax.servlet.ServletResponse;
  * @since 1.0.0
  */
 public class AmServletResponse implements ServletResponse {
+	
+	protected String characterEncoding;
+	
+	protected String contentType;
+	
+	protected int contentLength;
+	
+	protected int bufferSize;
+	
+	protected boolean committed;
+	
+	protected Locale locale;
+	
+	protected final ByteArrayServletOutputStream stream = new ByteArrayServletOutputStream();
+	
+	// Overridden methods follow
 
 	@Override
 	public String getCharacterEncoding() {
-		return null;
+		return this.characterEncoding;
 	}
 
 	@Override
 	public String getContentType() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.contentType;
 	}
 
 	@Override
 	public ServletOutputStream getOutputStream() throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.stream;
 	}
 
 	@Override
 	public PrintWriter getWriter() throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.stream.getWriter();
 	}
 
 	@Override
 	public void setCharacterEncoding(String charset) {
-		// TODO Auto-generated method stub
-		
+		this.characterEncoding = charset;
 	}
 
 	@Override
 	public void setContentLength(int len) {
-		// TODO Auto-generated method stub
-		
+		this.contentLength = len;
 	}
 
 	@Override
 	public void setContentType(String type) {
-		// TODO Auto-generated method stub
-		
+		this.contentType = type;
 	}
 
 	@Override
 	public void setBufferSize(int size) {
-		// TODO Auto-generated method stub
-		
+		this.bufferSize = size;
 	}
 
 	@Override
 	public int getBufferSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.bufferSize;
 	}
 
 	@Override
 	public void flushBuffer() throws IOException {
-		// TODO Auto-generated method stub
-		
+		this.stream.flush();
 	}
 
 	@Override
 	public void resetBuffer() {
-		// TODO Auto-generated method stub
-		
+		// nothing to do
 	}
 
 	@Override
 	public boolean isCommitted() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.committed;
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-		
+		// nothing to do
 	}
 
 	@Override
 	public void setLocale(Locale loc) {
-		// TODO Auto-generated method stub
-		
+		this.locale = loc;
 	}
 
 	@Override
 	public Locale getLocale() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.locale;
 	}
 
 }
