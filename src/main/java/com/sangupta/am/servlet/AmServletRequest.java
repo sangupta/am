@@ -83,6 +83,10 @@ public class AmServletRequest implements ServletRequest {
 	
 	protected String realPath;
 	
+	protected int contentLength;
+	
+	protected ServletInputStream inputStream;
+	
 	public static AmServletRequest getDefault() {
 		AmServletRequest request = new AmServletRequest();
 		
@@ -153,6 +157,14 @@ public class AmServletRequest implements ServletRequest {
 		this.realPath = realPath;
 	}
 	
+	public void setContentLength(int contentLength) {
+		this.contentLength = contentLength;
+	}
+	
+	public void setInputStream(ServletInputStream inputStream) {
+		this.inputStream = inputStream;
+	}
+	
 	// Overridden methods follow
 
 	@Override
@@ -181,7 +193,7 @@ public class AmServletRequest implements ServletRequest {
 
 	@Override
 	public int getContentLength() {
-		throw new NotImplementedException();
+		return this.contentLength;
 	}
 
 	@Override
@@ -191,7 +203,7 @@ public class AmServletRequest implements ServletRequest {
 
 	@Override
 	public ServletInputStream getInputStream() throws IOException {
-		return null;
+		return this.inputStream;
 	}
 
 	@Override
