@@ -3,6 +3,14 @@
 `am` makes it super-easy to unit-test Java Servlet API code by providing various mock
 implementations and helper classes.
 
+# Test
+
+The library provides convenience utility methods for testing for:
+
+* Testing JSP tags - short-cut way
+* Testing JSP tags - full-fledged way
+* Testing of Servlet filters
+
 ## To test the output of a simple JSP tag
 
 ```java
@@ -72,6 +80,30 @@ AmServletFilterTestHelper.assertFilterChainInvoked(filter, request, response);
 
 A similar method `AmServletFilterTestHelper.assertFilterChainNotInvoked` is available that
 checks that during filter execution, the `FilterChain` was not invoked.
+
+# Mock availability
+
+Dummy or mock implementations are available for the following Servlet API classes:
+
+* FilterChain
+* HttpServletRequest
+* HttpServletResponse
+* HttpSession
+* JspContext
+* JspWriter
+* PageContext
+* Principal
+* RequestDispatcher
+* ServletRequest
+* ServletResponse
+
+Along with are available the following support classes to aid in testing:
+
+* AmExceptionHandler - Exception handler to be used in conjunction with `AmPageContext`
+* AmFowwardOrIncludeHandler - handles forward/include calls in `AmPageContext`
+* AmUrlEncoder - a simple URL encoder to help in encoding URLs  in `AmHttpServletResponse`
+* ByteArrayServletInputStream - can be used with the `AmServletRequest` to provide input
+* ByteArrayServletOutputStream - can be used with `AmServletResponse` to capture output
 
 # Downloads
 
