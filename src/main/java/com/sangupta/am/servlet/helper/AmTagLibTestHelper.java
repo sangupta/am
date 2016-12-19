@@ -107,9 +107,12 @@ public class AmTagLibTestHelper {
 	}
 	
 	/**
-	 * Create an instance of the {@link SimpleTag}, and supply dummy implementations to
-	 * {@link JspContext} and {@link JspWriter} to the same, so that tag can be
-	 * easily unit-tested.
+	 * Create an instance of the {@link SimpleTag}, and supply dummy
+	 * implementations to {@link JspContext} and {@link JspWriter} to the same,
+	 * so that tag can be easily unit-tested.
+	 * 
+	 * @param <T>
+	 *            the Class type which extends the {@link SimpleTag}
 	 * 
 	 * @param clazz
 	 *            the class implementing {@link SimpleTag}
@@ -117,11 +120,9 @@ public class AmTagLibTestHelper {
 	 * @return the tag instance created and wired, <code>null</code> if
 	 *         something fails
 	 * 
-	 * @throws InstantiationException
-	 *             if tag cannot be instantiated
-	 * 
-	 * @throws IllegalAccessException
-	 *             if tag cannot be instantiated
+	 * @throws RuntimeException
+	 *             if tag cannot be instantiated or an
+	 *             {@link IllegalAccessException} is thrown
 	 */
 	public static <T extends SimpleTag> T getSimpleTagForUnitTesting(Class<T> clazz) {
 		if(clazz == null) {
@@ -151,9 +152,12 @@ public class AmTagLibTestHelper {
 	}
 	
 	/**
-	 * Create an instance of the {@link BodyTag}, and supply dummy implementations to
-	 * {@link JspContext} and {@link JspWriter} to the same, so that tag can be
-	 * easily unit-tested.
+	 * Create an instance of the {@link BodyTag}, and supply dummy
+	 * implementations to {@link JspContext} and {@link JspWriter} to the same,
+	 * so that tag can be easily unit-tested.
+	 * 
+	 * @param <T>
+	 *            the Class type which extends the {@link BodyTag}
 	 * 
 	 * @param clazz
 	 *            the class implementing {@link SimpleTag}
@@ -161,11 +165,9 @@ public class AmTagLibTestHelper {
 	 * @return the tag instance created and wired, <code>null</code> if
 	 *         something fails
 	 * 
-	 * @throws InstantiationException
-	 *             if tag cannot be instantiated
-	 * 
-	 * @throws IllegalAccessException
-	 *             if tag cannot be instantiated
+	 * @throws RuntimeException
+	 *             if the tag cannot instantiated or an IllegalAccessException
+	 *             is thrown during instantiation
 	 */
 	public static <T extends BodyTag> T getBodyTagForUnitTesting(Class<T> clazz) {
 		if(clazz == null) {
@@ -274,6 +276,9 @@ public class AmTagLibTestHelper {
 	/**
 	 * Test the {@link String} output written to {@link JspWriter} as part of
 	 * executing a {@link SimpleTag}.
+	 * 
+	 * @param <T>
+	 *            the Class type which extends the {@link SimpleTag}
 	 * 
 	 * @param tagClass
 	 *            the {@link Class} that implements the {@link Filter}

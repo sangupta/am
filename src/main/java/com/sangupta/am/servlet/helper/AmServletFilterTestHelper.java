@@ -43,6 +43,9 @@ public class AmServletFilterTestHelper {
 	 * Create a new instance of the {@link Filter} class that is geared up for
 	 * unit testing.
 	 * 
+	 * @param <T>
+	 *            the Class type which extends the {@link Filter}
+	 * 
 	 * @param clazz
 	 *            the {@link Class} that implements the {@link Filter}
 	 * 
