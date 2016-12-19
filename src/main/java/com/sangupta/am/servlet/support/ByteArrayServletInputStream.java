@@ -29,15 +29,15 @@ import javax.servlet.ServletInputStream;
  * @author sangupta
  * @since 1.0.0
  */
-public class ByetArrayServletInputStream extends ServletInputStream {
+public class ByteArrayServletInputStream extends ServletInputStream {
 	
 	protected final ByteArrayInputStream stream;
 	
-	public ByetArrayServletInputStream(byte[]  bytes) {
+	public ByteArrayServletInputStream(byte[]  bytes) {
 		this.stream = new ByteArrayInputStream(bytes);
 	}
 	
-	public ByetArrayServletInputStream(String data) {
+	public ByteArrayServletInputStream(String data) {
 		this.stream = new ByteArrayInputStream(data.getBytes());
 	}
 

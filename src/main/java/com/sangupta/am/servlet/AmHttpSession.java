@@ -29,7 +29,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 
-import com.sangupta.jerry.exceptions.NotImplementedException;
 import com.sangupta.jerry.util.StringUtils;
 
 /**
@@ -59,6 +58,8 @@ public class AmHttpSession implements HttpSession {
 	
 	protected HttpSessionContext httpSessionContext;
 	
+	protected boolean sessionValid = true;
+	
 	public void setCreated(long created) {
 		this.created = created;
 	}
@@ -73,6 +74,10 @@ public class AmHttpSession implements HttpSession {
 	
 	public void setHttpSessionContext(HttpSessionContext httpSessionContext) {
 		this.httpSessionContext = httpSessionContext;
+	}
+	
+	public boolean isSessionValid() {
+		return sessionValid;
 	}
 	
 	// Overridden methods follow
@@ -158,7 +163,7 @@ public class AmHttpSession implements HttpSession {
 
 	@Override
 	public void invalidate() {
-		throw new NotImplementedException();
+		this.sessionValid = false;
 	}
 
 	@Override

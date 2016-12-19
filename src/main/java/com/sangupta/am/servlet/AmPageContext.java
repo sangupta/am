@@ -38,7 +38,8 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.el.ExpressionEvaluator;
 import javax.servlet.jsp.el.VariableResolver;
 
-import com.sangupta.jerry.exceptions.NotImplementedException;
+import com.sangupta.am.servlet.support.AmExceptionHandler;
+import com.sangupta.am.servlet.support.AmForwardOrIncludeHandler;
 
 /**
  * Implementation of the {@link PageContext} for unit-testing that keeps all
@@ -74,6 +75,14 @@ public class AmPageContext extends PageContext {
 	protected ServletContext servletContext;
 	
 	protected HttpSession session;
+	
+	protected AmForwardOrIncludeHandler forwardOrIncludeHandler;
+	
+	protected AmExceptionHandler exceptionHandler;
+	
+	protected Object page;
+	
+	protected Exception exception;
 	
 	public void setJspWriter(JspWriter jspWriter) {
 		this.jspWriter = jspWriter;
@@ -111,6 +120,18 @@ public class AmPageContext extends PageContext {
 		this.session = session;
 	}
 	
+	public void setForwardOrIncludeHandler(AmForwardOrIncludeHandler forwardOrIncludeHandler) {
+		this.forwardOrIncludeHandler = forwardOrIncludeHandler;
+	}
+	
+	public void setExceptionHandler(AmExceptionHandler exceptionHandler) {
+		this.exceptionHandler = exceptionHandler;
+	}
+	
+	public void setPage(Object page) {
+		this.page = page;
+	}
+	
 	// Overridden methods follow
 
 	@Override
@@ -123,7 +144,19 @@ public class AmPageContext extends PageContext {
 
 	@Override
 	public void release() {
-		throw new NotImplementedException();
+		this.pageAttributes.clear();
+		this.elContext = null;
+		this.exceptionHandler = null;
+		this.applicationAttributes.clear();
+		this.expressionEvaluator = null;
+		this.variableResolver = null;
+		this.forwardOrIncludeHandler = null;
+		this.jspWriter = null;
+		this.request = null;
+		this.response = null;
+		this.servletConfig = null;
+		this.servletContext = null;
+		this.session = null;
 	}
 
 	@Override
@@ -133,7 +166,7 @@ public class AmPageContext extends PageContext {
 
 	@Override
 	public Object getPage() {
-		throw new NotImplementedException();
+		return this.page;
 	}
 
 	@Override
@@ -148,7 +181,7 @@ public class AmPageContext extends PageContext {
 
 	@Override
 	public Exception getException() {
-		throw new NotImplementedException();
+		return this.exception;
 	}
 
 	@Override
@@ -163,27 +196,27 @@ public class AmPageContext extends PageContext {
 
 	@Override
 	public void forward(String relativeUrlPath) throws ServletException, IOException {
-		throw new NotImplementedException();
+		this.forwardOrIncludeHandler.handleForward(relativeUrlPath);
 	}
 
 	@Override
 	public void include(String relativeUrlPath) throws ServletException, IOException {
-		throw new NotImplementedException();
+		this.forwardOrIncludeHandler.handleInclude(relativeUrlPath, true);
 	}
 
 	@Override
 	public void include(String relativeUrlPath, boolean flush) throws ServletException, IOException {
-		throw new NotImplementedException();
+		this.forwardOrIncludeHandler.handleInclude(relativeUrlPath, flush);
 	}
 
 	@Override
 	public void handlePageException(Exception e) throws ServletException, IOException {
-		throw new NotImplementedException();
+		this.exceptionHandler.handleException(e);
 	}
 
 	@Override
 	public void handlePageException(Throwable t) throws ServletException, IOException {
-		throw new NotImplementedException();
+		this.exceptionHandler.handleException(t);
 	}
 	
 	// Overridden methods from JspContext

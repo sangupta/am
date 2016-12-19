@@ -21,6 +21,7 @@ package com.sangupta.am.servlet;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,13 +30,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletInputStream;
 import javax.servlet.ServletRequest;
 
 import com.sangupta.jerry.ds.SimpleMultiMap;
-import com.sangupta.jerry.exceptions.NotImplementedException;
 import com.sangupta.jerry.util.AssertUtils;
 import com.sangupta.jerry.util.StringUtils;
 
@@ -86,6 +87,8 @@ public class AmServletRequest implements ServletRequest {
 	protected int contentLength;
 	
 	protected ServletInputStream inputStream;
+	
+	private boolean inputStreamObtained = false;
 	
 	public static AmServletRequest getDefault() {
 		AmServletRequest request = new AmServletRequest();
@@ -203,6 +206,7 @@ public class AmServletRequest implements ServletRequest {
 
 	@Override
 	public ServletInputStream getInputStream() throws IOException {
+		this.inputStreamObtained = true;
 		return this.inputStream;
 	}
 
@@ -231,10 +235,19 @@ public class AmServletRequest implements ServletRequest {
 		return values.toArray(StringUtils.EMPTY_STRING_LIST);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Map getParameterMap() {
-		throw new NotImplementedException();
+	public Map<String, String[]> getParameterMap() {
+		Map<String, String[]> map = new HashMap<>();
+		if(this.parameters.isEmpty()) {
+			return map;
+		}
+		
+		Set<String> keys = this.parameters.keySet();
+		for(String key : keys) {
+			map.put(key, this.parameters.getValues(key).toArray(StringUtils.EMPTY_STRING_LIST));
+		}
+		
+		return map;
 	}
 
 	@Override
@@ -259,7 +272,16 @@ public class AmServletRequest implements ServletRequest {
 
 	@Override
 	public BufferedReader getReader() throws IOException {
-		throw new NotImplementedException();
+		if(this.inputStreamObtained) {
+			throw new IllegalStateException();
+		}
+		
+		if(this.inputStream == null) {
+			throw new NullPointerException("Inputstream is null");
+		}
+		
+		BufferedReader reader = new BufferedReader(new InputStreamReader(this.inputStream));
+		return reader;
 	}
 
 	@Override
