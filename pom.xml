@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
@@ -11,7 +10,7 @@
 
 	<groupId>com.sangupta</groupId>
 	<artifactId>am</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>am</name>
@@ -69,9 +68,9 @@
 			<version>4.12</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.sangupta</groupId>
+			<groupId>com.sangupta</groupId>
 			<artifactId>jerry-core</artifactId>
-			<version>-SNAPSHOT</version>
+			<version>3.0.0</version>
 		</dependency>
 		
 		<!-- Servlet APIs and all -->
@@ -145,8 +144,6 @@
                 <artifactId>maven-source-plugin</artifactId>
                 <version>3.0.1</version>
 				<executions>
-					<!-- ~ This workaround prevents Maven from executing the 'generate-sources' 
-						phase twice. ~ See http://jira.codehaus.org/browse/MSOURCES-13 ~ and http://blog.peterlynch.ca/2010/05/maven-how-to-prevent-generate-sources.html -->
 					<execution>
 						<id>attach-sources</id>
 						<phase>invalid</phase>
