@@ -14,20 +14,26 @@ The library provides convenience utility methods for testing for:
 ## To test the output of a simple JSP tag
 
 ```java
-AmTagLibTestHelper.testTagOutput(MyCustomJSPTag.class, // the class implementing custom tag
-	expectedOutputWrittenToJspWriter,  				   // the expected String response
-	new GenericConsumer<MyCustomJSPTag>() {            // set the values before invocation
+AmTagLibTestHelper.testTagOutput(
+    // the class implementing custom tag
+    MyCustomJSPTag.class,
+    
+    // the expected String response
+    expectedOutputWrittenToJspWriter,
+
+    // set the values before invocation
+    new GenericConsumer<MyCustomJSPTag>() {
 	
-		public boolean consume(MyCustomJSPTag tag) {
-			// set the properties of the tag
-			tag.setProperty1(prop1);
-			tag.setProperty2(prop2);
+        public boolean consume(MyCustomJSPTag tag) {
+            // set the properties of the tag
+            tag.setProperty1(prop1);
+            tag.setProperty2(prop2);
 	
-			// and so on...
+            // and so on...
 			
-			return true;
-		}
-	}
+            return true;
+        }
+    }
 
 );
 ```
@@ -115,8 +121,8 @@ For **JitPack**, add the following `repository` to Maven,
 
 ```xml
 <repository>
-	<id>jitpack.io</id>
-	<url>https://jitpack.io</url>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
 </repository>
 ```
 
@@ -151,7 +157,7 @@ For more information on SemVer, please visit http://semver.org/.
 	
 ```
 am: Assert-Mocks for unit-testing Java servlet API code
-Copyright (c) 2016, Sandeep Gupta
+Copyright (c) 2016-2017, Sandeep Gupta
 
 https://sangupta.com/projects/am
 
