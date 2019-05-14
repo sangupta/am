@@ -25,8 +25,11 @@ import java.io.IOException;
 import javax.servlet.ServletInputStream;
 
 /**
+ * An implementation of the {@link ServletInputStream} that uses a
+ * {@link ByteArrayInputStream}.
  * 
  * @author sangupta
+ * 
  * @since 1.0.0
  */
 public class ByteArrayServletInputStream extends ServletInputStream {

@@ -20,6 +20,7 @@
 package com.sangupta.am.servlet.helper;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -35,6 +36,7 @@ import com.sangupta.am.servlet.AmFilterChain;
  * Helper class that aids in testing of {@link Filter}s.
  * 
  * @author sangupta
+ * 
  * @since 1.0.0
  */
 public class AmServletFilterTestHelper {
@@ -61,10 +63,10 @@ public class AmServletFilterTestHelper {
 		}
 		
 		try {
-			T instance = clazz.newInstance();
+			T instance = clazz.getDeclaredConstructor().newInstance();
 			
 			return instance;
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InvocationTargetException | InstantiationException | IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException e) {
 			throw new RuntimeException(e);
 		}
 	}

@@ -32,6 +32,8 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
  * and manipulate what has been written by the servlet.
  * 
  * @author sangupta
+ * 
+ * @since 1.0.0
  *
  */
 public class ByteArrayServletOutputStream extends ServletOutputStream {

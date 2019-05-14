@@ -20,6 +20,7 @@
 package com.sangupta.am.servlet.helper;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.Filter;
 import javax.servlet.jsp.JspContext;
@@ -43,6 +44,7 @@ import com.sangupta.jerry.util.ReflectionUtils;
  * by providing convenience methods and wiring default objects.
  *  
  * @author sangupta
+ * 
  * @since 1.0.0
  */
 public class AmTagLibTestHelper {
@@ -130,7 +132,7 @@ public class AmTagLibTestHelper {
 		}
 		
 		try {
-			T tag = clazz.newInstance();
+			T tag = clazz.getDeclaredConstructor().newInstance();
 			
 			AmPageContext context = new AmPageContext();
 			AmJspWriter writer = new AmJspWriter();
@@ -146,7 +148,7 @@ public class AmTagLibTestHelper {
 			tag.setJspContext(context);
 
 			return tag;
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -175,7 +177,7 @@ public class AmTagLibTestHelper {
 		}
 		
 		try {
-			T tag = clazz.newInstance();
+			T tag = clazz.getDeclaredConstructor().newInstance();
 			
 			AmPageContext context = new AmPageContext();
 			AmJspWriter writer = new AmJspWriter();
@@ -191,7 +193,7 @@ public class AmTagLibTestHelper {
 			tag.setPageContext(context);
 
 			return tag;
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new RuntimeException(e);
 		}
 	}
