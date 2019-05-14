@@ -172,7 +172,7 @@ For more information on SemVer, please visit http://semver.org/.
 	
 ```
 am: Assert-Mocks for unit-testing Java servlet API code
-Copyright (c) 2016-2017, Sandeep Gupta
+Copyright (c) 2016-present, Sandeep Gupta
 
 https://sangupta.com/projects/am
 
