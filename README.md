@@ -1,7 +1,22 @@
 # AM
 
+[![Travis](https://img.shields.io/travis/sangupta/am.svg)](https://travis-ci.org/sangupta/am)
+[![Coveralls](https://img.shields.io/coveralls/sangupta/am.svg)](https://coveralls.io/github/sangupta/am)
+[![license](https://img.shields.io/github/license/sangupta/am.svg)](https://choosealicense.com/licenses/apache-2.0/)
+[![Maven Central](https://img.shields.io/maven-central/v/com.sangupta/am.svg)](https://search.maven.org/search?q=g:com.sangupta%20AND%20a:am&core=gav)
+
+
 `am` makes it super-easy to unit-test Java Servlet API code by providing various mock
 implementations and helper classes.
+
+The library is tested on the following JDK versions:
+
+* Oracle JDK 11
+* Oracle JDK 9
+* Open JDK 11
+* Open JDK 10
+* Open JDK 9
+* Open JDK 8
 
 # Test
 
