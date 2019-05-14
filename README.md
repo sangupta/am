@@ -3,6 +3,15 @@
 `am` makes it super-easy to unit-test Java Servlet API code by providing various mock
 implementations and helper classes.
 
+The library is tested on the following JDK versions:
+
+* Oracle JDK 11
+* Oracle JDK 9
+* Open JDK 11
+* Open JDK 10
+* Open JDK 9
+* Open JDK 8
+
 # Test
 
 The library provides convenience utility methods for testing for:
