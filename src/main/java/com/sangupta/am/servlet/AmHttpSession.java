@@ -44,21 +44,21 @@ import com.sangupta.jerry.util.StringUtils;
 @SuppressWarnings("deprecation")
 public class AmHttpSession implements HttpSession {
 	
-	protected final Map<String, Object> attributes = new HashMap<>();
+	public final Map<String, Object> attributes = new HashMap<>();
 	
-	protected long created = System.currentTimeMillis();
+	public long created = System.currentTimeMillis();
 	
-	protected long lastAccessed = this.created;
+	public long lastAccessed = this.created;
 	
-	protected String sessionID = UUID.randomUUID().toString();
+	public String sessionID = UUID.randomUUID().toString();
 	
-	protected int maxInterval;
+	public int maxInterval;
 	
-	protected ServletContext servletContext;
+	public ServletContext servletContext;
 	
-	protected HttpSessionContext httpSessionContext;
+	public HttpSessionContext httpSessionContext;
 	
-	protected boolean sessionValid = true;
+	public boolean sessionValid = true;
 	
 	public void setCreated(long created) {
 		this.created = created;

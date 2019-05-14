@@ -45,15 +45,15 @@ import com.sangupta.jerry.ds.SimpleMultiMap;
  */
 public class AmHttpServletResponse extends AmServletResponse implements HttpServletResponse {
 	
-	protected final List<Cookie> cookies = new ArrayList<>();
+	public final List<Cookie> cookies = new ArrayList<>();
 	
-	protected final SimpleMultiMap<String, String> headers = new SimpleMultiMap<>();
+	public final SimpleMultiMap<String, String> headers = new SimpleMultiMap<>();
 	
-	protected int status;
+	public int status;
 	
-	protected String statusMessage;
+	public String statusMessage;
 	
-	protected AmUrlEncoder urlEncoder = new AmUrlEncoder();
+	public AmUrlEncoder urlEncoder = new AmUrlEncoder();
 	
 	public int getStatus() {
 		return status;

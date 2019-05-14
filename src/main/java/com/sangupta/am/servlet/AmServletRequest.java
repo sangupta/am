@@ -52,41 +52,41 @@ import com.sangupta.jerry.util.StringUtils;
  */
 public class AmServletRequest implements ServletRequest {
 	
-	protected final Map<String, Object> attributes = new HashMap<>();
+	public final Map<String, Object> attributes = new HashMap<>();
 	
-	protected final SimpleMultiMap<String, String> parameters = new SimpleMultiMap<>();
+	public final SimpleMultiMap<String, String> parameters = new SimpleMultiMap<>();
 	
-	protected final List<Locale> locales = new ArrayList<>();
+	public final List<Locale> locales = new ArrayList<>();
 	
-	protected String characterEncoding;
+	public String characterEncoding;
 	
-	protected String protocol;
+	public String protocol;
 	
-	protected String scheme;
+	public String scheme;
 	
-	protected String serverName;
+	public String serverName;
 	
-	protected int serverPort;
+	public int serverPort;
 	
-	protected String contentType;
+	public String contentType;
 	
-	protected String remoteAddress;
+	public String remoteAddress;
 	
-	protected String remoteHost;
+	public String remoteHost;
 	
-	protected int remotePort;
+	public int remotePort;
 
-	protected String localAddress;
+	public String localAddress;
 	
-	protected String localName;
+	public String localName;
 	
-	protected int localPort;
+	public int localPort;
 	
-	protected String realPath;
+	public String realPath;
 	
-	protected int contentLength;
+	public int contentLength;
 	
-	protected ServletInputStream inputStream;
+	public ServletInputStream inputStream;
 	
 	private boolean inputStreamObtained = false;
 	

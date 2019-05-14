@@ -40,19 +40,19 @@ import com.sangupta.am.servlet.support.ByteArrayServletOutputStream;
  */
 public class AmServletResponse implements ServletResponse {
 	
-	protected String characterEncoding;
+	public String characterEncoding;
 	
-	protected String contentType;
+	public String contentType;
 	
-	protected int contentLength;
+	public int contentLength;
 	
-	protected int bufferSize;
+	public int bufferSize;
 	
-	protected boolean committed;
+	public boolean committed;
 	
-	protected Locale locale;
+	public Locale locale;
 	
-	protected final ByteArrayServletOutputStream stream = new ByteArrayServletOutputStream();
+	public final ByteArrayServletOutputStream stream = new ByteArrayServletOutputStream();
 	
 	// Overridden methods follow
 

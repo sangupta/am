@@ -49,41 +49,41 @@ import com.sangupta.jerry.util.UriUtils;
  */
 public class AmHttpServletRequest extends AmServletRequest implements HttpServletRequest {
 	
-	protected final List<Cookie> cookies = new ArrayList<>();
+	public final List<Cookie> cookies = new ArrayList<>();
 	
-	protected final SimpleMultiMap<String, String> headers = new SimpleMultiMap<>();
+	public final SimpleMultiMap<String, String> headers = new SimpleMultiMap<>();
 	
-	protected String method = "GET";
+	public String method = "GET";
 	
-	protected Principal principal;
+	public Principal principal;
 	
-	protected HttpSession session;
+	public HttpSession session;
 	
-	protected String requestURI;
+	public String requestURI;
 	
-	protected StringBuffer requestURL;
+	public StringBuffer requestURL;
 	
-	protected String authType;
+	public String authType;
 	
-	protected String contextPath;
+	public String contextPath;
 	
-	protected String remoteUser;
+	public String remoteUser;
 	
-	protected String pathInfo;
+	public String pathInfo;
 	
-	protected String pathTranslated;
+	public String pathTranslated;
 	
-	protected String queryString;
+	public String queryString;
 	
-	protected String servletPath;
+	public String servletPath;
 	
-	protected boolean sessionIdFromCookie;
+	public boolean sessionIdFromCookie;
 	
-	protected boolean sessionIdFromURL;
+	public boolean sessionIdFromURL;
 	
-	protected boolean sessionValid;
+	public boolean sessionValid;
 	
-	protected final Set<String> userRoles = new HashSet<>();
+	public final Set<String> userRoles = new HashSet<>();
 	
 	public static AmHttpServletRequest getDefault(String path) {
 		AmHttpServletRequest request = new AmHttpServletRequest();
