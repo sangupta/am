@@ -126,7 +126,19 @@ Along with are available the following support classes to aid in testing:
 * ByteArrayServletInputStream - can be used with the `AmServletRequest` to provide input
 * ByteArrayServletOutputStream - can be used with `AmServletResponse` to capture output
 
-# Downloads
+# Release Downloads
+
+The latest release can be downloaded from Maven Central:
+
+```xml
+<dependency>
+    <groupId>com.sangupta</groupId>
+    <artifactId>am</artifactId>
+    <version>1.1.0</version>
+</dependency>
+```
+
+# Snapshot Downloads
 
 The library is currently under infancy and being updated continually, and thus has not
 been released. However, for development purposes you may use [JitPack](https://jitpack.io)
