@@ -18,7 +18,7 @@ The library is tested on the following JDK versions:
 * Open JDK 9
 * Open JDK 8
 
-# Test
+# Usage
 
 The library provides convenience utility methods for testing for:
 
@@ -26,7 +26,7 @@ The library provides convenience utility methods for testing for:
 * Testing JSP tags - full-fledged way
 * Testing of Servlet filters
 
-## To test the output of a simple JSP tag
+## Testing a simple JSP tag
 
 ```java
 AmTagLibTestHelper.testTagOutput(
@@ -53,7 +53,7 @@ AmTagLibTestHelper.testTagOutput(
 );
 ```
 
-## To test a given JSP tag we essentially need to do:
+### Testing a custom JSP tag
 
 ```java
 // let's say we are testing a Base64Tag class
@@ -77,7 +77,7 @@ String actualEncoded = AmTagLibTestHelper.getJspWriterString(tag);
 Assert.assertEquals(expectedEncoded, actualEncoded);
 ```
 
-## To test a Servlet Filter
+### Testing a Servlet Filter
 
 The code below is used to test `MyCustomFilter` by passing the relevant wired `ServletRequest`
 and `ServletResponse` objects making sure that the internal `FilterChain` supplied is invoked.
@@ -102,7 +102,7 @@ AmServletFilterTestHelper.assertFilterChainInvoked(filter, request, response);
 A similar method `AmServletFilterTestHelper.assertFilterChainNotInvoked` is available that
 checks that during filter execution, the `FilterChain` was not invoked.
 
-# Mock availability
+## Mock availability
 
 Dummy or mock implementations are available for the following Servlet API classes:
 
@@ -126,7 +126,15 @@ Along with are available the following support classes to aid in testing:
 * ByteArrayServletInputStream - can be used with the `AmServletRequest` to provide input
 * ByteArrayServletOutputStream - can be used with `AmServletResponse` to capture output
 
-# Release Downloads
+## Changelog
+
+* Version 1.1.0 (14 May 2019)
+  * Updated field modifiers to `public` to allow access while assertions
+  
+* Version 1.0.0 (21 Dec 2016)
+  * Initial release
+
+## Release Downloads
 
 The latest release can be downloaded from Maven Central:
 
@@ -138,7 +146,7 @@ The latest release can be downloaded from Maven Central:
 </dependency>
 ```
 
-# Snapshot Downloads
+## Snapshot Downloads
 
 The library is currently under infancy and being updated continually, and thus has not
 been released. However, for development purposes you may use [JitPack](https://jitpack.io)
