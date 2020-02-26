@@ -222,7 +222,7 @@ public class MockHttpServletRequest extends MockServletRequest implements HttpSe
 			return null;
 		}
 		
-		return this.headers.getValues(name.toLowerCase()).get(0);
+		return this.headers.getValues(name).get(0);
 	}
 
 	@Override
