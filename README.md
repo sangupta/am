@@ -1,10 +1,9 @@
-# AM
+# Assertions & Mocks (AM)
 
 [![Travis](https://img.shields.io/travis/sangupta/am.svg)](https://travis-ci.org/sangupta/am)
 [![Coveralls](https://img.shields.io/coveralls/sangupta/am.svg)](https://coveralls.io/github/sangupta/am)
 [![license](https://img.shields.io/github/license/sangupta/am.svg)](https://choosealicense.com/licenses/apache-2.0/)
 [![Maven Central](https://img.shields.io/maven-central/v/com.sangupta/am.svg)](https://search.maven.org/search?q=g:com.sangupta%20AND%20a:am&core=gav)
-
 
 `am` makes it super-easy to unit-test Java Servlet API code by providing various mock
 implementations and helper classes.
@@ -83,20 +82,23 @@ The code below is used to test `MyCustomFilter` by passing the relevant wired `S
 and `ServletResponse` objects making sure that the internal `FilterChain` supplied is invoked.
 
 ```java
-// obtain an instance of the filter
-MyCustomFilter filter = AmServletFilterTestHelper.getFilterForUnitTesting(MyCustomFilter.class);
+@Test
+public void testFilter() {
+  // obtain an instance of the filter
+  MyCustomFilter filter = AmServletFilterTestHelper.getFilterForUnitTesting(MyCustomFilter.class);
 
-// create request and response objects as filter will need them
-// the AmHttpServletRequest.getDefault() method returns a request for a server
-// deployed on localhost on port 80, and being hit with same machine where
-// the servlet context is `context` and the path is `/home.html`
-MockHttpServletRequest request = MockHttpServletRequest.getDefault("home.html");
+  // create request and response objects as filter will need them
+  // the AmHttpServletRequest.getDefault() method returns a request for a server
+  // deployed on localhost on port 80, and being hit with same machine where
+  // the servlet context is `context` and the path is `/home.html`
+  MockHttpServletRequest request = MockHttpServletRequest.getDefault("home.html");
 
-// the response object to which filter will write
-MockHttpServletResponse response = new MockHttpServletResponse();
+  // the response object to which filter will write
+  MockHttpServletResponse response = new MockHttpServletResponse();
 
-// filter invocation
-AmServletFilterTestHelper.assertFilterChainInvoked(filter, request, response);
+  // filter invocation
+  AmServletFilterTestHelper.assertFilterChainInvoked(filter, request, response);
+}
 ```
 
 A similar method `AmServletFilterTestHelper.assertFilterChainNotInvoked` is available that
@@ -216,7 +218,7 @@ limitations under the License.
 
 [1]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockFilterChain.java
 [2]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockHttpServletRequest.java
-[3[: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockHttpServletResponse.java
+[3]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockHttpServletResponse.java
 [4]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockHttpSession.java
 [5]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockJspContext.java
 [6]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockJspWriter.java
