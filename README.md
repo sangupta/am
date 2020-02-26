@@ -90,10 +90,10 @@ MyCustomFilter filter = AmServletFilterTestHelper.getFilterForUnitTesting(MyCust
 // the AmHttpServletRequest.getDefault() method returns a request for a server
 // deployed on localhost on port 80, and being hit with same machine where
 // the servlet context is `context` and the path is `/home.html`
-AmHttpServletRequest request = AmHttpServletRequest.getDefault("home.html");
+MockHttpServletRequest request = MockHttpServletRequest.getDefault("home.html");
 
 // the response object to which filter will write
-AmHttpServletResponse response = new AmHttpServletResponse();
+MockHttpServletResponse response = new MockHttpServletResponse();
 
 // filter invocation
 AmServletFilterTestHelper.assertFilterChainInvoked(filter, request, response);
@@ -106,27 +106,31 @@ checks that during filter execution, the `FilterChain` was not invoked.
 
 Dummy or mock implementations are available for the following Servlet API classes:
 
-* FilterChain
-* HttpServletRequest
-* HttpServletResponse
-* HttpSession
-* JspContext
-* JspWriter
-* PageContext
-* Principal
-* RequestDispatcher
-* ServletRequest
-* ServletResponse
+* [FilterChain][1]
+* [HttpServletRequest][2]
+* [HttpServletResponse][3]
+* [HttpSession][4]
+* [JspContext][5]
+* [JspWriter][6]
+* [PageContext][7]
+* [Principal][8]
+* [RequestDispatcher][9]
+* [ServletRequest][10]
+* [ServletResponse][11]
 
 Along with are available the following support classes to aid in testing:
 
-* AmExceptionHandler - Exception handler to be used in conjunction with `AmPageContext`
-* AmFowwardOrIncludeHandler - handles forward/include calls in `AmPageContext`
-* AmUrlEncoder - a simple URL encoder to help in encoding URLs  in `AmHttpServletResponse`
-* ByteArrayServletInputStream - can be used with the `AmServletRequest` to provide input
-* ByteArrayServletOutputStream - can be used with `AmServletResponse` to capture output
+* [MockExceptionHandler][12] - Exception handler to be used in conjunction with [MockPageContext][7]
+* [MockFowwardOrIncludeHandler][13] - handles forward/include calls in [MockPageContext][7]
+* [MockUrlEncoder][14] - a simple URL encoder to help in encoding URLs  in [MockHttpServletResponse][3]
+* [ByteArrayServletInputStream][15] - can be used with the [MockServletRequest][10] to provide input
+* [ByteArrayServletOutputStream][16] - can be used with [MockServletResponse][11] to capture output
 
 ## Changelog
+
+* Current Snapshot
+  * Renamed classes to use `Mock` when they are mocking a JRE class
+  * Headers are now case-sensitive in [HttpServletRequest][2] and [HttpServletResponse][3]
 
 * Version 1.1.0 (14 May 2019)
   * Updated field modifiers to `public` to allow access while assertions
@@ -192,7 +196,7 @@ For more information on SemVer, please visit http://semver.org/.
 	
 ```
 am: Assert-Mocks for unit-testing Java servlet API code
-Copyright (c) 2016-present, Sandeep Gupta
+Copyright (c) 2016-2020, Sandeep Gupta
 
 https://sangupta.com/projects/am
 
@@ -208,3 +212,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+
+[1]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockFilterChain.java
+[2]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockHttpServletRequest.java
+[3[: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockHttpServletResponse.java
+[4]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockHttpSession.java
+[5]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockJspContext.java
+[6]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockJspWriter.java
+[7]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockPageContext.java
+[8]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockPrincipal.java
+[9]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockRequestDispatcher.java
+[10]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockServletRequest.java
+[11]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/MockServletResponse.java
+[12]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/support/MockExceptionHandler.java
+[13]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/support/MockForwardOrIncludeHandler.java
+[14]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/support/MockUrlEncoder.java
+[15]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/support/ByteArrayServletInputStream.java
+[16]: https://github.com/sangupta/am/blob/master/src/main/java/com/sangupta/am/servlet/support/ByteArrayServletOutputStream.java
