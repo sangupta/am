@@ -28,7 +28,7 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sangupta.am.servlet.support.AmUrlEncoder;
+import com.sangupta.am.servlet.support.MockUrlEncoder;
 import com.sangupta.jerry.constants.HttpHeaderName;
 import com.sangupta.jerry.constants.HttpStatusCode;
 import com.sangupta.jerry.ds.SimpleMultiMap;
@@ -44,7 +44,7 @@ import com.sangupta.jerry.ds.SimpleMultiMap;
  * 
  * @since 1.0.0
  */
-public class AmHttpServletResponse extends AmServletResponse implements HttpServletResponse {
+public class MockHttpServletResponse extends MockServletResponse implements HttpServletResponse {
 	
 	public final List<Cookie> cookies = new ArrayList<>();
 	
@@ -54,7 +54,7 @@ public class AmHttpServletResponse extends AmServletResponse implements HttpServ
 	
 	public String statusMessage;
 	
-	public AmUrlEncoder urlEncoder = new AmUrlEncoder();
+	public MockUrlEncoder urlEncoder = new MockUrlEncoder();
 	
 	public int getStatus() {
 		return status;
@@ -64,7 +64,7 @@ public class AmHttpServletResponse extends AmServletResponse implements HttpServ
 		return statusMessage;
 	}
 	
-	public void setUrlEncoder(AmUrlEncoder urlEncoder) {
+	public void setUrlEncoder(MockUrlEncoder urlEncoder) {
 		this.urlEncoder = urlEncoder;
 	}
 	

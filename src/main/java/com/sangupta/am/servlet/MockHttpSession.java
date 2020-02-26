@@ -43,7 +43,7 @@ import com.sangupta.jerry.util.StringUtils;
  * @since 1.0.0
  */
 @SuppressWarnings("deprecation")
-public class AmHttpSession implements HttpSession {
+public class MockHttpSession implements HttpSession {
 	
 	public final Map<String, Object> attributes = new HashMap<>();
 	

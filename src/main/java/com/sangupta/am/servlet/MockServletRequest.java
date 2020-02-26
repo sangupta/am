@@ -51,7 +51,7 @@ import com.sangupta.jerry.util.StringUtils;
  * 
  * @since 1.0.0
  */
-public class AmServletRequest implements ServletRequest {
+public class MockServletRequest implements ServletRequest {
 	
 	public final Map<String, Object> attributes = new HashMap<>();
 	
@@ -91,8 +91,8 @@ public class AmServletRequest implements ServletRequest {
 	
 	private boolean inputStreamObtained = false;
 	
-	public static AmServletRequest getDefault() {
-		AmServletRequest request = new AmServletRequest();
+	public static MockServletRequest getDefault() {
+		MockServletRequest request = new MockServletRequest();
 		
 		request.protocol = "HTTP/1.1";
 		request.scheme = "http";
@@ -330,7 +330,7 @@ public class AmServletRequest implements ServletRequest {
 	
 	@Override
 	public RequestDispatcher getRequestDispatcher(String path) {
-		return new AmRequestDispatcher(path);
+		return new MockRequestDispatcher(path);
 	}
 
 	@Override

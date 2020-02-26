@@ -48,7 +48,7 @@ import com.sangupta.jerry.util.UriUtils;
  * 
  * @since 1.0.0
  */
-public class AmHttpServletRequest extends AmServletRequest implements HttpServletRequest {
+public class MockHttpServletRequest extends MockServletRequest implements HttpServletRequest {
 	
 	public final List<Cookie> cookies = new ArrayList<>();
 	
@@ -86,8 +86,8 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 	
 	public final Set<String> userRoles = new HashSet<>();
 	
-	public static AmHttpServletRequest getDefault(String path) {
-		AmHttpServletRequest request = new AmHttpServletRequest();
+	public static MockHttpServletRequest getDefault(String path) {
+		MockHttpServletRequest request = new MockHttpServletRequest();
 		
 		request.protocol = "HTTP/1.1";
 		request.scheme = "http";
@@ -324,7 +324,7 @@ public class AmHttpServletRequest extends AmServletRequest implements HttpServle
 		}
 		
 		if(create) {
-			this.session = new AmHttpSession();
+			this.session = new MockHttpSession();
 			return this.session;
 		}
 		

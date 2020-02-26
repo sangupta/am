@@ -39,7 +39,7 @@ import com.sangupta.am.servlet.support.ByteArrayServletOutputStream;
  * 
  * @since 1.0.0
  */
-public class AmServletResponse implements ServletResponse {
+public class MockServletResponse implements ServletResponse {
 	
 	public String characterEncoding;
 	

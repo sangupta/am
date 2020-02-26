@@ -36,13 +36,13 @@ import javax.servlet.jsp.JspWriter;
  * 
  * @since 1.0.0
  */
-public class AmJspWriter extends JspWriter {
+public class MockJspWriter extends JspWriter {
 	
 	protected final StringWriter stringWriter = new StringWriter();
 	
 	protected final PrintWriter writer = new PrintWriter(this.stringWriter);
 
-	public AmJspWriter() {
+	public MockJspWriter() {
 		super(Integer.MAX_VALUE, true);
 	}
 

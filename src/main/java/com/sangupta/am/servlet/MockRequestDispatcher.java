@@ -33,15 +33,15 @@ import javax.servlet.ServletResponse;
  * @since 1.0.0
  *
  */
-public class AmRequestDispatcher implements RequestDispatcher {
+public class MockRequestDispatcher implements RequestDispatcher {
 	
 	protected String path;
 	
-	public AmRequestDispatcher() {
+	public MockRequestDispatcher() {
 
 	}
 	
-	public AmRequestDispatcher(String path) {
+	public MockRequestDispatcher(String path) {
 		this.path = path;
 	}
 	

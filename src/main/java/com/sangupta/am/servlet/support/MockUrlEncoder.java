@@ -21,20 +21,20 @@ package com.sangupta.am.servlet.support;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.sangupta.am.servlet.AmHttpServletResponse;
+import com.sangupta.am.servlet.MockHttpServletResponse;
 
 /**
- * A simple URL encoder that is used by {@link AmHttpServletResponse}
+ * A simple URL encoder that is used by {@link MockHttpServletResponse}
  * to encode URLs via the encode methods in the {@link HttpServletResponse}.
  * 
  * This class can be overridden and a new implementation provided to the
- * {@link AmHttpServletResponse} class so that you can easily test things.
+ * {@link MockHttpServletResponse} class so that you can easily test things.
  * 
  * @author sangupta
  * 
  * @since 1.0.0
  */
-public class AmUrlEncoder {
+public class MockUrlEncoder {
 
 	public String encodeURL(String url) {
 		return url;

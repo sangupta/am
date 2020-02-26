@@ -19,20 +19,30 @@
 
 package com.sangupta.am.servlet;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.el.ELContext;
-import javax.servlet.jsp.JspContext;
+import javax.servlet.Servlet;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.el.ExpressionEvaluator;
 import javax.servlet.jsp.el.VariableResolver;
 
+import com.sangupta.am.servlet.support.MockExceptionHandler;
+import com.sangupta.am.servlet.support.MockForwardOrIncludeHandler;
+
 /**
- * Implementation of the {@link JspContext} for unit-testing that keeps all
+ * Implementation of the {@link PageContext} for unit-testing that keeps all
  * params within memory and provides useful accessor methods to modify the
  * values.
  * 
@@ -43,13 +53,9 @@ import javax.servlet.jsp.el.VariableResolver;
  * @since 1.0.0
  */
 @SuppressWarnings("deprecation")
-public class AmJspContext extends JspContext {
+public class MockPageContext extends PageContext {
 	
 	protected final Map<String, Object> pageAttributes = new HashMap<>();
-	
-	protected final Map<String, Object> requestAttributes = new HashMap<>();
-	
-	protected final Map<String, Object> sessionAttributes = new HashMap<>();
 	
 	protected final Map<String, Object> applicationAttributes = new HashMap<>();
 	
@@ -60,6 +66,24 @@ public class AmJspContext extends JspContext {
 	protected ExpressionEvaluator expressionEvaluator;
 	
 	protected VariableResolver variableResolver;
+	
+	protected ServletRequest request;
+	
+	protected ServletResponse response;
+	
+	protected ServletConfig servletConfig;
+	
+	protected ServletContext servletContext;
+	
+	protected HttpSession session;
+	
+	protected MockForwardOrIncludeHandler forwardOrIncludeHandler;
+	
+	protected MockExceptionHandler exceptionHandler;
+	
+	protected Object page;
+	
+	protected Exception exception;
 	
 	public void setJspWriter(JspWriter jspWriter) {
 		this.jspWriter = jspWriter;
@@ -77,7 +101,126 @@ public class AmJspContext extends JspContext {
 		this.variableResolver = variableResolver;
 	}
 	
+	public void setRequest(ServletRequest request) {
+		this.request = request;
+	}
+	
+	public void setResponse(ServletResponse response) {
+		this.response = response;
+	}
+	
+	public void setServletConfig(ServletConfig servletConfig) {
+		this.servletConfig = servletConfig;
+	}
+	
+	public void setServletContext(ServletContext servletContext) {
+		this.servletContext = servletContext;
+	}
+	
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+	
+	public void setForwardOrIncludeHandler(MockForwardOrIncludeHandler forwardOrIncludeHandler) {
+		this.forwardOrIncludeHandler = forwardOrIncludeHandler;
+	}
+	
+	public void setExceptionHandler(MockExceptionHandler exceptionHandler) {
+		this.exceptionHandler = exceptionHandler;
+	}
+	
+	public void setPage(Object page) {
+		this.page = page;
+	}
+	
 	// Overridden methods follow
+
+	@Override
+	public void initialize(Servlet servlet, ServletRequest request, ServletResponse response, String errorPageURL, boolean needsSession, int bufferSize, boolean autoFlush) throws IOException, IllegalStateException, IllegalArgumentException {
+		this.servletConfig = servlet.getServletConfig();
+		this.servletContext = servlet.getServletConfig().getServletContext();
+		this.request = request;
+		this.response = response;
+	}
+
+	@Override
+	public void release() {
+		this.pageAttributes.clear();
+		this.elContext = null;
+		this.exceptionHandler = null;
+		this.applicationAttributes.clear();
+		this.expressionEvaluator = null;
+		this.variableResolver = null;
+		this.forwardOrIncludeHandler = null;
+		this.jspWriter = null;
+		this.request = null;
+		this.response = null;
+		this.servletConfig = null;
+		this.servletContext = null;
+		this.session = null;
+	}
+
+	@Override
+	public HttpSession getSession() {
+		return this.session;
+	}
+
+	@Override
+	public Object getPage() {
+		return this.page;
+	}
+
+	@Override
+	public ServletRequest getRequest() {
+		return this.request;
+	}
+
+	@Override
+	public ServletResponse getResponse() {
+		return this.response;
+	}
+
+	@Override
+	public Exception getException() {
+		return this.exception;
+	}
+
+	@Override
+	public ServletConfig getServletConfig() {
+		return this.servletConfig;
+	}
+
+	@Override
+	public ServletContext getServletContext() {
+		return this.servletContext;
+	}
+
+	@Override
+	public void forward(String relativeUrlPath) throws ServletException, IOException {
+		this.forwardOrIncludeHandler.handleForward(relativeUrlPath);
+	}
+
+	@Override
+	public void include(String relativeUrlPath) throws ServletException, IOException {
+		this.forwardOrIncludeHandler.handleInclude(relativeUrlPath, true);
+	}
+
+	@Override
+	public void include(String relativeUrlPath, boolean flush) throws ServletException, IOException {
+		this.forwardOrIncludeHandler.handleInclude(relativeUrlPath, flush);
+	}
+
+	@Override
+	public void handlePageException(Exception e) throws ServletException, IOException {
+		this.exceptionHandler.handleException(e);
+	}
+
+	@Override
+	public void handlePageException(Throwable t) throws ServletException, IOException {
+		this.exceptionHandler.handleException(t);
+	}
+	
+	// Overridden methods from JspContext
 
 	@Override
 	public Object findAttribute(String arg0) {
@@ -85,12 +228,14 @@ public class AmJspContext extends JspContext {
 			return this.pageAttributes.get(arg0);
 		}
 
-		if(this.requestAttributes.containsKey(arg0)) {
-			return this.requestAttributes.get(arg0);
+		Object attribute = this.getRequest().getAttribute(arg0);
+		if(attribute != null) {
+			return attribute;
 		}
 
-		if(this.sessionAttributes.containsKey(arg0)) {
-			return this.sessionAttributes.get(arg0);
+		attribute = this.getSession().getAttribute(arg0);
+		if(attribute != null) {
+			return attribute;
 		}
 
 		if(this.applicationAttributes.containsKey(arg0)) {
@@ -112,10 +257,10 @@ public class AmJspContext extends JspContext {
 				return this.pageAttributes.get(arg0);
 				
 			case PageContext.REQUEST_SCOPE:
-				return this.requestAttributes.get(arg0);
+				return this.getRequest().getAttribute(arg0);
 				
 			case PageContext.SESSION_SCOPE:
-				return this.sessionAttributes.get(arg0);
+				return this.getSession().getAttribute(arg0);
 				
 			case PageContext.APPLICATION_SCOPE:
 				return this.applicationAttributes.get(arg0);
@@ -126,16 +271,17 @@ public class AmJspContext extends JspContext {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Enumeration<String> getAttributeNamesInScope(int arg0) {
 		switch(arg0) {
 			case PageContext.PAGE_SCOPE:
 				return Collections.enumeration(this.pageAttributes.keySet());
 				
 			case PageContext.REQUEST_SCOPE:
-				return Collections.enumeration(this.requestAttributes.keySet());
+				return this.getRequest().getAttributeNames();
 				
 			case PageContext.SESSION_SCOPE:
-				return Collections.enumeration(this.sessionAttributes.keySet());
+				return this.getSession().getAttributeNames();
 				
 			case PageContext.APPLICATION_SCOPE:
 				return Collections.enumeration(this.applicationAttributes.keySet());
@@ -151,11 +297,13 @@ public class AmJspContext extends JspContext {
 			return PageContext.PAGE_SCOPE;
 		}
 		
-		if(this.requestAttributes.containsKey(arg0)) {
+		Object attribute = this.getRequest().getAttribute(arg0);
+		if(attribute != null) {
 			return PageContext.REQUEST_SCOPE;
 		}
 
-		if(this.sessionAttributes.containsKey(arg0)) {
+		attribute = this.getSession().getAttribute(arg0);
+		if(attribute != null) {
 			return PageContext.SESSION_SCOPE;
 		}
 
@@ -199,11 +347,11 @@ public class AmJspContext extends JspContext {
 				return;
 				
 			case PageContext.REQUEST_SCOPE:
-				this.requestAttributes.remove(arg0);
+				this.getRequest().removeAttribute(arg0);
 				return;
 				
 			case PageContext.SESSION_SCOPE:
-				this.sessionAttributes.remove(arg0);
+				this.getSession().removeAttribute(arg0);
 				return;
 				
 			case PageContext.APPLICATION_SCOPE:
@@ -228,11 +376,11 @@ public class AmJspContext extends JspContext {
 				return;
 				
 			case PageContext.REQUEST_SCOPE:
-				this.requestAttributes.put(arg0, arg1);
+				this.getRequest().setAttribute(arg0, arg1);
 				return;
 				
 			case PageContext.SESSION_SCOPE:
-				this.sessionAttributes.put(arg0, arg1);
+				this.getSession().setAttribute(arg0, arg1);
 				return;
 				
 			case PageContext.APPLICATION_SCOPE:

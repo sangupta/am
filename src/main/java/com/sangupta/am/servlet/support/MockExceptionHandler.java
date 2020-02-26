@@ -19,21 +19,14 @@
 
 package com.sangupta.am.servlet.support;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
 /**
  * 
  * @author sangupta
- * 
- * @since 1.0.0
  *
+ * @since 1.0.0
  */
-public abstract class AmForwardOrIncludeHandler {
+public abstract class MockExceptionHandler {
+	
+	public abstract void handleException(Throwable throwable); 
 
-	public abstract void handleForward(String url) throws ServletException, IOException;
-	
-	public abstract void handleInclude(String url, boolean flush) throws ServletException, IOException; 
-	
 }

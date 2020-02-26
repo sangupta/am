@@ -32,10 +32,10 @@ import javax.servlet.jsp.tagext.Tag;
 
 import org.junit.Assert;
 
-import com.sangupta.am.servlet.AmHttpServletRequest;
-import com.sangupta.am.servlet.AmHttpServletResponse;
-import com.sangupta.am.servlet.AmJspWriter;
-import com.sangupta.am.servlet.AmPageContext;
+import com.sangupta.am.servlet.MockHttpServletRequest;
+import com.sangupta.am.servlet.MockHttpServletResponse;
+import com.sangupta.am.servlet.MockJspWriter;
+import com.sangupta.am.servlet.MockPageContext;
 import com.sangupta.jerry.consume.GenericConsumer;
 import com.sangupta.jerry.util.ReflectionUtils;
 
@@ -134,10 +134,10 @@ public class AmTagLibTestHelper {
 		try {
 			T tag = clazz.getDeclaredConstructor().newInstance();
 			
-			AmPageContext context = new AmPageContext();
-			AmJspWriter writer = new AmJspWriter();
-			AmHttpServletRequest request = new AmHttpServletRequest();
-			AmHttpServletResponse response = new AmHttpServletResponse();
+			MockPageContext context = new MockPageContext();
+			MockJspWriter writer = new MockJspWriter();
+			MockHttpServletRequest request = new MockHttpServletRequest();
+			MockHttpServletResponse response = new MockHttpServletResponse();
 
 			// set page context
 			context.setJspWriter(writer);
@@ -179,10 +179,10 @@ public class AmTagLibTestHelper {
 		try {
 			T tag = clazz.getDeclaredConstructor().newInstance();
 			
-			AmPageContext context = new AmPageContext();
-			AmJspWriter writer = new AmJspWriter();
-			AmHttpServletRequest request = new AmHttpServletRequest();
-			AmHttpServletResponse response = new AmHttpServletResponse();
+			MockPageContext context = new MockPageContext();
+			MockJspWriter writer = new MockJspWriter();
+			MockHttpServletRequest request = new MockHttpServletRequest();
+			MockHttpServletResponse response = new MockHttpServletResponse();
 
 			// set page context
 			context.setJspWriter(writer);

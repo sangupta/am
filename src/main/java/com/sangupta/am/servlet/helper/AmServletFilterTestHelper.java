@@ -30,7 +30,7 @@ import javax.servlet.ServletResponse;
 
 import org.junit.Assert;
 
-import com.sangupta.am.servlet.AmFilterChain;
+import com.sangupta.am.servlet.MockFilterChain;
 
 /**
  * Helper class that aids in testing of {@link Filter}s.
@@ -103,7 +103,7 @@ public class AmServletFilterTestHelper {
 			Assert.fail();
 		}
 		
-		AmFilterChain chain = new AmFilterChain();
+		MockFilterChain chain = new MockFilterChain();
 		try {
 			filter.doFilter(servletRequest, servletResponse, chain);
 		} catch (IOException | ServletException e) {
@@ -145,7 +145,7 @@ public class AmServletFilterTestHelper {
 			Assert.fail();
 		}
 		
-		AmFilterChain chain = new AmFilterChain();
+		MockFilterChain chain = new MockFilterChain();
 		try {
 			filter.doFilter(servletRequest, servletResponse, chain);
 		} catch (IOException | ServletException e) {
@@ -187,7 +187,7 @@ public class AmServletFilterTestHelper {
 			Assert.fail();
 		}
 		
-		AmFilterChain chain = new AmFilterChain();
+		MockFilterChain chain = new MockFilterChain();
 		try {
 			filter.doFilter(servletRequest, servletResponse, chain);
 		} catch (Throwable t) {
