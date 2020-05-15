@@ -73,17 +73,17 @@ public class MockJspWriter extends JspWriter {
 	}
 
 	@Override
-	public void clearBuffer() throws IOException {
+	public void clearBuffer() {
 		// do nothing
 	}
 
 	@Override
-	public void close() throws IOException {
+	public void close() {
 		this.writer.close();
 	}
 
 	@Override
-	public void flush() throws IOException {
+	public void flush() {
 		this.writer.flush();
 	}
 
@@ -93,107 +93,107 @@ public class MockJspWriter extends JspWriter {
 	}
 
 	@Override
-	public void newLine() throws IOException {
+	public void newLine() {
 		this.writer.print('\n');
 	}
 
 	@Override
-	public void print(boolean arg0) throws IOException {
+	public void print(boolean arg0) {
 		this.writer.print(arg0);
 	}
 
 	@Override
-	public void print(char arg0) throws IOException {
+	public void print(char arg0) {
 		this.writer.print(arg0);
 	}
 
 	@Override
-	public void print(int arg0) throws IOException {
+	public void print(int arg0) {
 		this.writer.print(arg0);
 	}
 
 	@Override
-	public void print(long arg0) throws IOException {
+	public void print(long arg0) {
 		this.writer.print(arg0);
 	}
 
 	@Override
-	public void print(float arg0) throws IOException {
+	public void print(float arg0) {
 		this.writer.print(arg0);
 	}
 
 	@Override
-	public void print(double arg0) throws IOException {
+	public void print(double arg0) {
 		this.writer.print(arg0);
 	}
 
 	@Override
-	public void print(char[] arg0) throws IOException {
+	public void print(char[] arg0) {
 		this.writer.print(arg0);
 	}
 
 	@Override
-	public void print(String arg0) throws IOException {
+	public void print(String arg0) {
 		this.writer.print(arg0);
 	}
 
 	@Override
-	public void print(Object arg0) throws IOException {
+	public void print(Object arg0) {
 		this.writer.print(arg0);
 	}
 
 	@Override
-	public void println() throws IOException {
+	public void println() {
 		this.writer.println();
 	}
 
 	@Override
-	public void println(boolean arg0) throws IOException {
+	public void println(boolean arg0) {
 		this.writer.println(arg0);
 	}
 
 	@Override
-	public void println(char arg0) throws IOException {
+	public void println(char arg0) {
 		this.writer.println(arg0);
 	}
 
 	@Override
-	public void println(int arg0) throws IOException {
+	public void println(int arg0) {
 		this.writer.println(arg0);
 	}
 
 	@Override
-	public void println(long arg0) throws IOException {
+	public void println(long arg0) {
 		this.writer.println(arg0);
 	}
 
 	@Override
-	public void println(float arg0) throws IOException {
+	public void println(float arg0) {
 		this.writer.println(arg0);
 	}
 
 	@Override
-	public void println(double arg0) throws IOException {
+	public void println(double arg0) {
 		this.writer.println(arg0);
 	}
 
 	@Override
-	public void println(char[] arg0) throws IOException {
+	public void println(char[] arg0) {
 		this.writer.println(arg0);
 	}
 
 	@Override
-	public void println(String arg0) throws IOException {
+	public void println(String arg0) {
 		this.writer.println(arg0);
 	}
 
 	@Override
-	public void println(Object arg0) throws IOException {
+	public void println(Object arg0) {
 		this.writer.println(arg0);
 	}
 
 	@Override
-	public void write(char[] cbuf, int off, int len) throws IOException {
+	public void write(char[] cbuf, int off, int len) {
 		this.writer.write(cbuf, off, len);
 	}
 
