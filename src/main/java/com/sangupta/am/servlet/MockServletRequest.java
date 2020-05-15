@@ -53,10 +53,19 @@ import com.sangupta.jerry.util.StringUtils;
  */
 public class MockServletRequest implements ServletRequest {
 	
+    /**
+     * Attributes associated with this request
+     */
 	public final Map<String, Object> attributes = new HashMap<>();
 	
+	/**
+	 * Parameters associated with this request
+	 */
 	public final SimpleMultiMap<String, String> parameters = new SimpleMultiMap<>();
 	
+	/**
+	 * {@link Locale}s associated with this request
+	 */
 	public final List<Locale> locales = new ArrayList<>();
 	
 	public String characterEncoding;
@@ -213,12 +222,7 @@ public class MockServletRequest implements ServletRequest {
 
 	@Override
 	public String getParameter(String name) {
-		List<String> values = this.parameters.getValues(name);
-		if(AssertUtils.isEmpty(values)) {
-			return null;
-		}
-		
-		return values.get(0);
+		return this.parameters.getOne(name);
 	}
 
 	@Override

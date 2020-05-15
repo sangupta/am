@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
@@ -39,7 +40,7 @@ import com.sangupta.jerry.util.UriUtils;
 
 /**
  * Implementation of {@link HttpServletRequest} for unit-testing that keeps all
- * params within memory and provides useful accessor methods to modify the
+ * parameters within memory and provides useful accessor methods to modify the
  * values.
  * 
  * Meant to be used only for unit-testing.
@@ -49,311 +50,370 @@ import com.sangupta.jerry.util.UriUtils;
  * @since 1.0.0
  */
 public class MockHttpServletRequest extends MockServletRequest implements HttpServletRequest {
-	
-	public final List<Cookie> cookies = new ArrayList<>();
-	
-	public final SimpleMultiMap<String, String> headers = new SimpleMultiMap<>();
-	
-	public String method = "GET";
-	
-	public Principal principal;
-	
-	public HttpSession session;
-	
-	public String requestURI;
-	
-	public StringBuffer requestURL;
-	
-	public String authType;
-	
-	public String contextPath;
-	
-	public String remoteUser;
-	
-	public String pathInfo;
-	
-	public String pathTranslated;
-	
-	public String queryString;
-	
-	public String servletPath;
-	
-	public boolean sessionIdFromCookie;
-	
-	public boolean sessionIdFromURL;
-	
-	public boolean sessionValid;
-	
-	public final Set<String> userRoles = new HashSet<>();
-	
-	public static MockHttpServletRequest getDefault(String path) {
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		
-		request.protocol = "HTTP/1.1";
-		request.scheme = "http";
-		
-		request.requestURI = "/context/";
-		request.requestURL = new StringBuffer("http://localhost:80/context/");
-		
-		request.serverName = "localhost";
-		request.serverPort = 8080;
-		
-		request.characterEncoding = null;
-		request.contentType = null;
-		
-		request.remoteAddress = null;
-		request.remoteHost = null;
-		request.remotePort = -1;
-		
-		request.requestURI = path;
-		request.requestURL = new StringBuffer(UriUtils.addWebPaths("http://localhost:8080/context/", path));
-		
-		request.localAddress = null;
-		request.localPort = -1;
-		
-		return request;
-	}
-	
-	public void setSessionValid(boolean sessionValid) {
-		this.sessionValid = sessionValid;
-	}
-	
-	public void addUserRole(String role) {
-		this.userRoles.add(role);
-	}
-	
-	public void removeUserRole(String role) {
-		this.userRoles.remove(role);
-	}
-	
-	public void setSessionIdFromCookie(boolean sessionIdFromCookie) {
-		this.sessionIdFromCookie = sessionIdFromCookie;
-	}
-	
-	public void setSessionIdFromURL(boolean sessionIdFromURL) {
-		this.sessionIdFromURL = sessionIdFromURL;
-	}
-	
-	public void setServletPath(String servletPath) {
-		this.servletPath = servletPath;
-	}
-	
-	public void setQueryString(String queryString) {
-		this.queryString = queryString;
-	}
-	
-	public void setPathInfo(String pathInfo) {
-		this.pathInfo = pathInfo;
-	}
-	
-	public void setPathTranslated(String pathTranslated) {
-		this.pathTranslated = pathTranslated;
-	}
-	
-	public void setContextPath(String contextPath) {
-		this.contextPath = contextPath;
-	}
-	
-	public void setRemoteUser(String remoteUser) {
-		this.remoteUser = remoteUser;
-	}
-	
-	public void setRequestURI(String requestURI) {
-		this.requestURI = requestURI;
-	}
-	
-	public void setRequestURL(StringBuffer requestURL) {
-		this.requestURL = requestURL;
-	}
-	
-	public void setMethod(String method) {
-		this.method = method;
-	}
-	
-	public void addCookie(Cookie cookie) {
-		if(cookie == null) {
-			return;
-		}
-		
-		this.cookies.add(cookie);
-	}
-	
-	public void addCookie(String name, String value) {
-		this.cookies.add(new Cookie(name, value));
-	}
-	
-	public void setPrincipal(Principal principal) {
-		this.principal = principal;
-	}
-	
-	public void setAuthType(String authType) {
-		this.authType = authType;
-	}
-	
-	// Overridden methods follow
 
-	@Override
-	public String getAuthType() {
-		return this.authType;
-	}
+    /**
+     * {@link Cookie}s associated with this request
+     */
+    public final List<Cookie> cookies = new ArrayList<>();
 
-	@Override
-	public Cookie[] getCookies() {
-		return this.cookies.toArray(new Cookie[] { });
-	}
+    /**
+     * Headers associated with this request
+     */
+    public final SimpleMultiMap<String, String> headers = new SimpleMultiMap<>();
 
-	@Override
-	public long getDateHeader(String name) {
-		String header = this.getHeader(name);
-		if(AssertUtils.isEmpty(header)) {
-			return 0;
-		}
-		
-		try {
-			return new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").parse(header).getTime();
-		} catch(ParseException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    /**
+     * The method name associated with this request. Default value is
+     * <code>GET</code>
+     */
+    public String method = "GET";
 
-	@Override
-	public String getHeader(String name) {
-		if(!this.headers.containsKey(name)) {
-			return null;
-		}
-		
-		return this.headers.getValues(name).get(0);
-	}
+    /**
+     * {@link Principal} associated with this request
+     */
+    public Principal principal;
 
-	@Override
-	public Enumeration<String> getHeaders(String name) {
-		if(!this.headers.containsKey(name)) {
-			return null;
-		}
-		
-		return Collections.enumeration(this.headers.getValues(name));
-	}
+    /**
+     * {@link HttpSession} associated with this request
+     */
+    public HttpSession session;
 
-	@Override
-	public Enumeration<String> getHeaderNames() {
-		return Collections.enumeration(this.headers.keySet());
-	}
+    /**
+     * The URI associated with this request
+     */
+    public String requestURI;
 
-	@Override
-	public int getIntHeader(String name) {
-		String header = this.getHeader(name);
-		if(AssertUtils.isEmpty(header)) {
-			return 0;
-		}
-		
-		return Integer.parseInt(header);
-	}
+    /**
+     * The URL associated with this request
+     */
+    public StringBuffer requestURL;
 
-	@Override
-	public String getMethod() {
-		return this.method;
-	}
+    /**
+     * The name of the authentication scheme used to protect the servlet.
+     */
+    public String authType;
 
-	@Override
-	public String getPathInfo() {
-		return this.pathInfo;
-	}
+    public String contextPath;
 
-	@Override
-	public String getPathTranslated() {
-		return this.pathTranslated;
-	}
+    public String remoteUser;
 
-	@Override
-	public String getContextPath() {
-		return this.contextPath;
-	}
+    public String pathInfo;
 
-	@Override
-	public String getQueryString() {
-		return this.queryString;
-	}
+    public String pathTranslated;
 
-	@Override
-	public String getRemoteUser() {
-		return this.remoteUser;
-	}
+    public String queryString;
 
-	@Override
-	public boolean isUserInRole(String role) {
-		if(AssertUtils.isEmpty(role)) {
-			return false;
-		}
-		
-		if(this.userRoles.contains(role)) {
-			return true;
-		}
-		
-		return false;
-	}
+    public String servletPath;
 
-	@Override
-	public Principal getUserPrincipal() {
-		return this.principal;
-	}
+    public boolean sessionIdFromCookie;
 
-	@Override
-	public String getRequestedSessionId() {
-		return this.getSession().getId();
-	}
+    public boolean sessionIdFromURL;
 
-	@Override
-	public String getRequestURI() {
-		return this.requestURI;
-	}
+    public boolean sessionValid;
 
-	@Override
-	public StringBuffer getRequestURL() {
-		return this.requestURL;
-	}
+    public final Set<String> userRoles = new HashSet<>();
 
-	@Override
-	public String getServletPath() {
-		return this.servletPath;
-	}
+    public static MockHttpServletRequest getDefault(String path) {
+        MockHttpServletRequest request = new MockHttpServletRequest();
 
-	@Override
-	public HttpSession getSession(boolean create) {
-		if(this.session != null) {
-			return session;
-		}
-		
-		if(create) {
-			this.session = new MockHttpSession();
-			return this.session;
-		}
-		
-		return null;
-	}
+        request.protocol = "HTTP/1.1";
+        request.scheme = "http";
 
-	@Override
-	public HttpSession getSession() {
-		return this.getSession(true);
-	}
+        request.requestURI = "/context/";
+        request.requestURL = new StringBuffer("http://localhost:80/context/");
 
-	@Override
-	public boolean isRequestedSessionIdValid() {
-		return this.sessionValid;
-	}
+        request.serverName = "localhost";
+        request.serverPort = 8080;
 
-	@Override
-	public boolean isRequestedSessionIdFromCookie() {
-		return this.sessionIdFromCookie;
-	}
+        request.characterEncoding = null;
+        request.contentType = null;
 
-	@Override
-	public boolean isRequestedSessionIdFromURL() {
-		return this.sessionIdFromURL;
-	}
+        request.remoteAddress = null;
+        request.remoteHost = null;
+        request.remotePort = -1;
 
-	@Override
-	public boolean isRequestedSessionIdFromUrl() {
-		return this.sessionIdFromURL;
-	}
+        request.requestURI = path;
+        request.requestURL = new StringBuffer(UriUtils.addWebPaths("http://localhost:8080/context/", path));
+
+        request.localAddress = null;
+        request.localPort = -1;
+
+        return request;
+    }
+
+    public void setSessionValid(boolean sessionValid) {
+        this.sessionValid = sessionValid;
+    }
+
+    public void addUserRole(String role) {
+        this.userRoles.add(role);
+    }
+
+    public void removeUserRole(String role) {
+        this.userRoles.remove(role);
+    }
+
+    public void setSessionIdFromCookie(boolean sessionIdFromCookie) {
+        this.sessionIdFromCookie = sessionIdFromCookie;
+    }
+
+    public void setSessionIdFromURL(boolean sessionIdFromURL) {
+        this.sessionIdFromURL = sessionIdFromURL;
+    }
+
+    public void setServletPath(String servletPath) {
+        this.servletPath = servletPath;
+    }
+
+    public void setQueryString(String queryString) {
+        this.queryString = queryString;
+    }
+
+    public void setPathInfo(String pathInfo) {
+        this.pathInfo = pathInfo;
+    }
+
+    public void setPathTranslated(String pathTranslated) {
+        this.pathTranslated = pathTranslated;
+    }
+
+    public void setContextPath(String contextPath) {
+        this.contextPath = contextPath;
+    }
+
+    public void setRemoteUser(String remoteUser) {
+        this.remoteUser = remoteUser;
+    }
+
+    public void setRequestURI(String requestURI) {
+        this.requestURI = requestURI;
+    }
+
+    public void setRequestURL(StringBuffer requestURL) {
+        this.requestURL = requestURL;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public void addCookie(Cookie cookie) {
+        if (cookie == null) {
+            return;
+        }
+
+        this.cookies.add(cookie);
+    }
+
+    public void addCookie(String name, String value) {
+        this.cookies.add(new Cookie(name, value));
+    }
+
+    public void setPrincipal(Principal principal) {
+        this.principal = principal;
+    }
+
+    public void setAuthType(String authType) {
+        this.authType = authType;
+    }
+
+    // Overridden methods follow
+
+    @Override
+    public String getAuthType() {
+        return this.authType;
+    }
+
+    @Override
+    public Cookie[] getCookies() {
+        return this.cookies.toArray(new Cookie[] {});
+    }
+    
+    public int getNumCookies() {
+        return this.cookies.size();
+    }
+    
+    public Cookie getCookie(String name) {
+        for(Cookie cookie : this.cookies) {
+            if(name.equals(cookie.getName())) {
+                return cookie;
+            }
+        }
+        
+        return null;
+    }
+    
+    public void clearCookies() {
+        this.cookies.clear();
+    }
+    
+    public void addDateHeader(String name, long date) {
+        name = name.toLowerCase();
+        this.headers.put(name, new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").format(new Date(date)));
+    }
+
+    @Override
+    public long getDateHeader(String name) {
+        String header = this.getHeader(name);
+        if (AssertUtils.isEmpty(header)) {
+            return 0;
+        }
+
+        try {
+            return new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").parse(header).getTime();
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public String getHeader(String name) {
+        name = name.toLowerCase();
+        return this.headers.getOne(name);
+    }
+
+    @Override
+    public Enumeration<String> getHeaders(String name) {
+        name = name.toLowerCase();
+        if (!this.headers.containsKey(name)) {
+            return null;
+        }
+
+        return Collections.enumeration(this.headers.getValues(name));
+    }
+
+    @Override
+    public Enumeration<String> getHeaderNames() {
+        return Collections.enumeration(this.headers.keySet());
+    }
+
+    public void setHeader(String name, String value) {
+        name = name.toLowerCase();
+        this.headers.remove(name);
+        this.headers.put(name, value);
+    }
+
+    public void addIntHeader(String name, int value) {
+        name = name.toLowerCase();
+        this.headers.put(name, String.valueOf(value));
+    }
+    
+    @Override
+    public int getIntHeader(String name) {
+        name = name.toLowerCase();
+
+        String header = this.getHeader(name);
+        if (AssertUtils.isEmpty(header)) {
+            return 0;
+        }
+
+        return Integer.parseInt(header);
+    }
+
+    @Override
+    public String getMethod() {
+        return this.method;
+    }
+
+    @Override
+    public String getPathInfo() {
+        return this.pathInfo;
+    }
+
+    @Override
+    public String getPathTranslated() {
+        return this.pathTranslated;
+    }
+
+    @Override
+    public String getContextPath() {
+        return this.contextPath;
+    }
+
+    @Override
+    public String getQueryString() {
+        return this.queryString;
+    }
+
+    @Override
+    public String getRemoteUser() {
+        return this.remoteUser;
+    }
+
+    @Override
+    public boolean isUserInRole(String role) {
+        if (AssertUtils.isEmpty(role)) {
+            return false;
+        }
+
+        if (this.userRoles.contains(role)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public Principal getUserPrincipal() {
+        return this.principal;
+    }
+
+    @Override
+    public String getRequestedSessionId() {
+        return this.getSession().getId();
+    }
+
+    @Override
+    public String getRequestURI() {
+        return this.requestURI;
+    }
+
+    @Override
+    public StringBuffer getRequestURL() {
+        return this.requestURL;
+    }
+
+    @Override
+    public String getServletPath() {
+        return this.servletPath;
+    }
+
+    @Override
+    public HttpSession getSession(boolean create) {
+        if (this.session != null) {
+            return session;
+        }
+
+        if (create) {
+            this.session = new MockHttpSession();
+            return this.session;
+        }
+
+        return null;
+    }
+
+    @Override
+    public HttpSession getSession() {
+        return this.getSession(true);
+    }
+
+    @Override
+    public boolean isRequestedSessionIdValid() {
+        return this.sessionValid;
+    }
+
+    @Override
+    public boolean isRequestedSessionIdFromCookie() {
+        return this.sessionIdFromCookie;
+    }
+
+    @Override
+    public boolean isRequestedSessionIdFromURL() {
+        return this.sessionIdFromURL;
+    }
+
+    @Override
+    public boolean isRequestedSessionIdFromUrl() {
+        return this.sessionIdFromURL;
+    }
 
 }
