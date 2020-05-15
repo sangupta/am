@@ -26,6 +26,7 @@ import javax.servlet.Filter;
 import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTag;
 import javax.servlet.jsp.tagext.SimpleTag;
 import javax.servlet.jsp.tagext.Tag;
@@ -64,6 +65,14 @@ public class AmTagLibTestHelper {
 		}
 		
 		return ReflectionUtils.getFieldForName(tag, "jspContext", JspContext.class);
+	}
+	
+	public static PageContext getPageContext(BodyTag tag) {
+	    if(tag == null) {
+	        return null;
+	    }
+	    
+	    return ReflectionUtils.getFieldForName(tag, "pageContext", PageContext.class);
 	}
 	
 	/**
