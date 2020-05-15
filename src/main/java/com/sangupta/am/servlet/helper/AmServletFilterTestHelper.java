@@ -20,7 +20,6 @@
 package com.sangupta.am.servlet.helper;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -41,36 +40,6 @@ import com.sangupta.am.servlet.MockFilterChain;
  */
 public class AmServletFilterTestHelper {
 
-	/**
-	 * Create a new instance of the {@link Filter} class that is geared up for
-	 * unit testing.
-	 * 
-	 * @param <T>
-	 *            the Class type which extends the {@link Filter}
-	 * 
-	 * @param clazz
-	 *            the {@link Class} that implements the {@link Filter}
-	 * 
-	 * @return the instance thus created
-	 * 
-	 * @throws RuntimeException
-	 *             if instance creation throws {@link InstantiationException} or
-	 *             {@link IllegalAccessException}
-	 */
-	public static <T extends Filter> T getFilterForUnitTesting(Class<T> clazz) {
-		if(clazz == null) {
-			return null;
-		}
-		
-		try {
-			T instance = clazz.getDeclaredConstructor().newInstance();
-			
-			return instance;
-		} catch (InvocationTargetException | InstantiationException | IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
 	/**
 	 * Execute the filter via the
 	 * {@link Filter#doFilter(ServletRequest, ServletResponse, javax.servlet.FilterChain)}
@@ -165,8 +134,8 @@ public class AmServletFilterTestHelper {
 	 * @param filter
 	 *            the {@link Filter} to execute
 	 * 
-	 * @param throwable
-	 *            the {@link Exception} instance that we want to test for
+	 * @param exceptionClass
+	 *            the {@link Exception} class that we want to test for
 	 * 
 	 * @param servletRequest
 	 *            the {@link ServletRequest} as input
@@ -174,7 +143,7 @@ public class AmServletFilterTestHelper {
 	 * @param servletResponse
 	 *            the {@link ServletResponse} as output
 	 */
-	public static void assertFilterException(Filter filter, Throwable throwable, ServletRequest servletRequest, ServletResponse servletResponse) {
+	public static void assertFilterException(Filter filter, Class<? extends Exception> exceptionClass, ServletRequest servletRequest, ServletResponse servletResponse) {
 		if(filter == null) {
 			Assert.fail();
 		}
@@ -191,7 +160,7 @@ public class AmServletFilterTestHelper {
 		try {
 			filter.doFilter(servletRequest, servletResponse, chain);
 		} catch (Throwable t) {
-			if(throwable.getClass().isAssignableFrom(t.getClass())) {
+			if(exceptionClass.isAssignableFrom(t.getClass())) {
 				Assert.assertTrue(true);
 				return;
 			}
