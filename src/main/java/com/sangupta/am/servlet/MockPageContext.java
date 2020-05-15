@@ -67,15 +67,15 @@ public class MockPageContext extends PageContext {
 	
 	protected VariableResolver variableResolver;
 	
-	protected ServletRequest request;
+	protected ServletRequest request = new MockServletRequest();
 	
-	protected ServletResponse response;
+	protected ServletResponse response = new MockServletResponse();
 	
 	protected ServletConfig servletConfig;
 	
 	protected ServletContext servletContext;
 	
-	protected HttpSession session;
+	protected HttpSession session = new MockHttpSession();
 	
 	protected MockForwardOrIncludeHandler forwardOrIncludeHandler;
 	
@@ -136,7 +136,7 @@ public class MockPageContext extends PageContext {
 	// Overridden methods follow
 
 	@Override
-	public void initialize(Servlet servlet, ServletRequest request, ServletResponse response, String errorPageURL, boolean needsSession, int bufferSize, boolean autoFlush) throws IOException, IllegalStateException, IllegalArgumentException {
+	public void initialize(Servlet servlet, ServletRequest request, ServletResponse response, String errorPageURL, boolean needsSession, int bufferSize, boolean autoFlush) {
 		this.servletConfig = servlet.getServletConfig();
 		this.servletContext = servlet.getServletConfig().getServletContext();
 		this.request = request;
@@ -223,47 +223,47 @@ public class MockPageContext extends PageContext {
 	// Overridden methods from JspContext
 
 	@Override
-	public Object findAttribute(String arg0) {
-		if(this.pageAttributes.containsKey(arg0)) {
-			return this.pageAttributes.get(arg0);
+	public Object findAttribute(String key) {
+		if(this.pageAttributes.containsKey(key)) {
+			return this.pageAttributes.get(key);
 		}
 
-		Object attribute = this.getRequest().getAttribute(arg0);
+		Object attribute = this.getRequest().getAttribute(key);
 		if(attribute != null) {
 			return attribute;
 		}
 
-		attribute = this.getSession().getAttribute(arg0);
+		attribute = this.getSession().getAttribute(key);
 		if(attribute != null) {
 			return attribute;
 		}
 
-		if(this.applicationAttributes.containsKey(arg0)) {
-			return this.applicationAttributes.get(arg0);
+		if(this.applicationAttributes.containsKey(key)) {
+			return this.applicationAttributes.get(key);
 		}
 
 		return null;
 	}
 
 	@Override
-	public Object getAttribute(String arg0) {
-		return this.pageAttributes.get(arg0);
+	public Object getAttribute(String key) {
+		return this.pageAttributes.get(key);
 	}
 
 	@Override
-	public Object getAttribute(String arg0, int arg1) {
-		switch(arg1) {
+	public Object getAttribute(String key, int scope) {
+		switch(scope) {
 			case PageContext.PAGE_SCOPE:
-				return this.pageAttributes.get(arg0);
+				return this.pageAttributes.get(key);
 				
 			case PageContext.REQUEST_SCOPE:
-				return this.getRequest().getAttribute(arg0);
+				return this.getRequest().getAttribute(key);
 				
 			case PageContext.SESSION_SCOPE:
-				return this.getSession().getAttribute(arg0);
+				return this.getSession().getAttribute(key);
 				
 			case PageContext.APPLICATION_SCOPE:
-				return this.applicationAttributes.get(arg0);
+				return this.applicationAttributes.get(key);
 				
 			default:
 				throw new IllegalArgumentException("invalid scope");
@@ -272,8 +272,8 @@ public class MockPageContext extends PageContext {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Enumeration<String> getAttributeNamesInScope(int arg0) {
-		switch(arg0) {
+	public Enumeration<String> getAttributeNamesInScope(int scope) {
+		switch(scope) {
 			case PageContext.PAGE_SCOPE:
 				return Collections.enumeration(this.pageAttributes.keySet());
 				
@@ -292,22 +292,22 @@ public class MockPageContext extends PageContext {
 	}
 
 	@Override
-	public int getAttributesScope(String arg0) {
-		if(this.pageAttributes.containsKey(arg0)) {
+	public int getAttributesScope(String key) {
+		if(this.pageAttributes.containsKey(key)) {
 			return PageContext.PAGE_SCOPE;
 		}
 		
-		Object attribute = this.getRequest().getAttribute(arg0);
+		Object attribute = this.getRequest().getAttribute(key);
 		if(attribute != null) {
 			return PageContext.REQUEST_SCOPE;
 		}
 
-		attribute = this.getSession().getAttribute(arg0);
+		attribute = this.getSession().getAttribute(key);
 		if(attribute != null) {
 			return PageContext.SESSION_SCOPE;
 		}
 
-		if(this.applicationAttributes.containsKey(arg0)) {
+		if(this.applicationAttributes.containsKey(key)) {
 			return PageContext.APPLICATION_SCOPE;
 		}
 		
@@ -335,27 +335,27 @@ public class MockPageContext extends PageContext {
 	}
 
 	@Override
-	public void removeAttribute(String arg0) {
-		this.pageAttributes.remove(arg0);
+	public void removeAttribute(String key) {
+		this.pageAttributes.remove(key);
 	}
 
 	@Override
-	public void removeAttribute(String arg0, int arg1) {
-		switch(arg1) {
+	public void removeAttribute(String key, int scope) {
+		switch(scope) {
 			case PageContext.PAGE_SCOPE:
-				this.pageAttributes.remove(arg0);
+				this.pageAttributes.remove(key);
 				return;
 				
 			case PageContext.REQUEST_SCOPE:
-				this.getRequest().removeAttribute(arg0);
+				this.getRequest().removeAttribute(key);
 				return;
 				
 			case PageContext.SESSION_SCOPE:
-				this.getSession().removeAttribute(arg0);
+				this.getSession().removeAttribute(key);
 				return;
 				
 			case PageContext.APPLICATION_SCOPE:
-				this.applicationAttributes.remove(arg0);
+				this.applicationAttributes.remove(key);
 				return;
 				
 			default:
@@ -364,27 +364,27 @@ public class MockPageContext extends PageContext {
 	}
 
 	@Override
-	public void setAttribute(String arg0, Object arg1) {
-		this.pageAttributes.put(arg0, arg1);
+	public void setAttribute(String key, Object value) {
+		this.pageAttributes.put(key, value);
 	}
 
 	@Override
-	public void setAttribute(String arg0, Object arg1, int arg2) {
-		switch(arg2) {
+	public void setAttribute(String key, Object value, int scope) {
+		switch(scope) {
 			case PageContext.PAGE_SCOPE:
-				this.pageAttributes.put(arg0, arg1);
+				this.pageAttributes.put(key, value);
 				return;
 				
 			case PageContext.REQUEST_SCOPE:
-				this.getRequest().setAttribute(arg0, arg1);
+				this.getRequest().setAttribute(key, value);
 				return;
 				
 			case PageContext.SESSION_SCOPE:
-				this.getSession().setAttribute(arg0, arg1);
+				this.getSession().setAttribute(key, value);
 				return;
 				
 			case PageContext.APPLICATION_SCOPE:
-				this.applicationAttributes.put(arg0, arg1);
+				this.applicationAttributes.put(key, value);
 				return;
 				
 			default:
