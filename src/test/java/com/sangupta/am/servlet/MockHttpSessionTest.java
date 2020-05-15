@@ -16,6 +16,13 @@ import javax.servlet.http.HttpSessionContext;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Unit tests for {@link MockHttpSession}.
+ * 
+ * @author sangupta
+ *
+ * @since 2.0.0
+ */
 @SuppressWarnings("deprecation")
 public class MockHttpSessionTest {
 

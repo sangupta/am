@@ -9,6 +9,13 @@ import javax.servlet.http.HttpSession;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Unit tests for {@link MockHttpServletRequest}.
+ * 
+ * @author sangupta
+ *
+ * @since 2.0.0
+ */
 public class MockHttpServletRequestTest {
 
     @Test

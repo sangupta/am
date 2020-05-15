@@ -7,6 +7,8 @@ import org.junit.Test;
  * Unit tests for {@link MockPrincipal}.
  * 
  * @author sangupta
+ * 
+ * @since 2.0.0
  *
  */
 public class MockPrincipalTest {

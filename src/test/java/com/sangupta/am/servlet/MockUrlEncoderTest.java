@@ -5,6 +5,13 @@ import org.junit.Test;
 
 import com.sangupta.am.servlet.support.MockUrlEncoder;
 
+/**
+ * Unit tests for {@link MockUrlEncoder}.
+ * 
+ * @author sangupta
+ *
+ * @since 2.0.0
+ */
 public class MockUrlEncoderTest {
     
     @Test
