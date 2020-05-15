@@ -68,12 +68,12 @@ public class MockServletResponse implements ServletResponse {
 	}
 
 	@Override
-	public ServletOutputStream getOutputStream() throws IOException {
+	public ServletOutputStream getOutputStream() {
 		return this.stream;
 	}
 
 	@Override
-	public PrintWriter getWriter() throws IOException {
+	public PrintWriter getWriter() {
 		return this.stream.getWriter();
 	}
 
