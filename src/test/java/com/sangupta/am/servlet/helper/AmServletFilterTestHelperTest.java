@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.sangupta.am.servlet.MockServletRequest;
@@ -35,11 +36,84 @@ public class AmServletFilterTestHelperTest {
         TestNothingFilter filter = new TestNothingFilter();
         AmServletFilterTestHelper.assertFilterChainNotInvoked(filter, new MockServletRequest(), new MockServletResponse());
     }
-    
+
     @Test
     public void testException() {
         TestExceptionFilter filter = new TestExceptionFilter();
         AmServletFilterTestHelper.assertFilterException(filter, IllegalArgumentException.class, new MockServletRequest(), new MockServletResponse());
+    }
+
+    @Test
+    public void testFailures() {
+        try {
+            AmServletFilterTestHelper.assertFilterChainInvoked(null, null, null);
+            Assert.assertTrue(false);
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
+        
+        try {
+            AmServletFilterTestHelper.assertFilterChainInvoked(new TestFilter(), null, null);
+            Assert.assertTrue(false);
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
+        
+        try {
+            AmServletFilterTestHelper.assertFilterChainInvoked(new TestFilter(), new MockServletRequest(), null);
+            Assert.assertTrue(false);
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
+        
+        try {
+            AmServletFilterTestHelper.assertFilterChainNotInvoked(null, null, null);
+            Assert.assertTrue(false);
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
+        
+        try {
+            AmServletFilterTestHelper.assertFilterChainNotInvoked(new TestNothingFilter(), null, null);
+            Assert.assertTrue(false);
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
+        
+        try {
+            AmServletFilterTestHelper.assertFilterChainNotInvoked(new TestNothingFilter(), new MockServletRequest(), null);
+            Assert.assertTrue(false);
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
+        
+        try {
+            AmServletFilterTestHelper.assertFilterException(null, null, null, null);
+            Assert.assertTrue(false);
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
+        
+        try {
+            AmServletFilterTestHelper.assertFilterException(new TestExceptionFilter(), null, null, null);
+            Assert.assertTrue(false);
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
+        
+        try {
+            AmServletFilterTestHelper.assertFilterException(new TestExceptionFilter(), IllegalArgumentException.class, null, null);
+            Assert.assertTrue(false);
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
+        
+        try {
+            AmServletFilterTestHelper.assertFilterException(new TestExceptionFilter(), IllegalArgumentException.class, new MockServletRequest(), null);
+            Assert.assertTrue(false);
+        } catch (AssertionError e) {
+            Assert.assertTrue(true);
+        }
     }
 
     public static class TestFilter implements Filter {
@@ -74,7 +148,7 @@ public class AmServletFilterTestHelperTest {
         }
 
     }
-    
+
     public static class TestExceptionFilter implements Filter {
 
         @Override
