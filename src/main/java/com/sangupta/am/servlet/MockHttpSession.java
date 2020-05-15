@@ -154,7 +154,7 @@ public class MockHttpSession implements HttpSession {
 	@Override
 	public void removeAttribute(String name) {
 		this.lastAccessed = System.currentTimeMillis();
-		this.removeAttribute(name);
+		this.attributes.remove(name);
 	}
 
 	@Override
