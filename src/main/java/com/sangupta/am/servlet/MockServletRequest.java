@@ -20,9 +20,7 @@
 package com.sangupta.am.servlet;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -200,7 +198,7 @@ public class MockServletRequest implements ServletRequest {
 	}
 
 	@Override
-	public void setCharacterEncoding(String env) throws UnsupportedEncodingException {
+	public void setCharacterEncoding(String env) {
 		this.characterEncoding = env;
 	}
 
@@ -215,7 +213,7 @@ public class MockServletRequest implements ServletRequest {
 	}
 
 	@Override
-	public ServletInputStream getInputStream() throws IOException {
+	public ServletInputStream getInputStream() {
 		this.inputStreamObtained = true;
 		return this.inputStream;
 	}
@@ -276,7 +274,7 @@ public class MockServletRequest implements ServletRequest {
 	}
 
 	@Override
-	public BufferedReader getReader() throws IOException {
+	public BufferedReader getReader() {
 		if(this.inputStreamObtained) {
 			throw new IllegalStateException();
 		}
@@ -329,7 +327,7 @@ public class MockServletRequest implements ServletRequest {
 			return false;
 		}
 		
-		return this.scheme.toLowerCase().trim().startsWith("https://");
+		return this.scheme.toLowerCase().trim().startsWith("https");
 	}
 	
 	@Override
