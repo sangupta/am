@@ -31,6 +31,7 @@ public class MockPageContextTest {
     @Test
     public void test() throws ServletException, IOException {
         MockPageContext pageContext = new MockPageContext();
+        
         pageContext.setAttribute("hello", "world");
         Assert.assertEquals("world", pageContext.getAttribute("hello"));
         Assert.assertEquals("world", pageContext.findAttribute("hello"));
