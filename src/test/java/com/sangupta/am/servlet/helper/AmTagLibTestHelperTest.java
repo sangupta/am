@@ -4,7 +4,9 @@ import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.tagext.BodyTag;
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.SimpleTag;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import org.junit.Assert;
@@ -22,6 +24,18 @@ import com.sangupta.jerry.consume.GenericConsumer;
  *
  */
 public class AmTagLibTestHelperTest {
+    
+    @Test
+    public void testFailures() {
+        Assert.assertNull(AmTagLibTestHelper.getJspContext(null));
+        Assert.assertNull(AmTagLibTestHelper.getJspWriter(null));
+        Assert.assertNull(AmTagLibTestHelper.getPageContext(null));
+        Assert.assertNull(AmTagLibTestHelper.getJspWriterString(null));
+        Assert.assertNull(AmTagLibTestHelper.getSimpleTagForUnitTesting(null));
+        Assert.assertNull(AmTagLibTestHelper.getBodyTagForUnitTesting(null));
+        AmTagLibTestHelper.doTag((SimpleTag) null);
+        Assert.assertNull(AmTagLibTestHelper.doTag((BodyTag) null));
+    }
 
     @Test
     public void testSimpleTag() {
@@ -74,6 +88,11 @@ public class AmTagLibTestHelperTest {
     }
     
     public static class AnchorLinkTag extends BodyTagSupport {
+        
+        /**
+         * Generated via Eclipse
+         */
+        private static final long serialVersionUID = 735237068973428524L;
         
         private String link;
         
